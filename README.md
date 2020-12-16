@@ -1,4 +1,8 @@
 # save-the-word
+ Esta es una aplicación para poder guardar las palabras en inglés que vayas aprendiendo ya sea por tu cuenta en el buscador o en los cuentos que se proporcionan, en tu lista podras tener la palabra nueva, su descripcion y traducción.
+
+ Se esta utilizando Indie Flower una fuente de Google Fonts, de resto se trabaja con los estilos proporcionados por Bootstrap.
+
 
 ## Project setup
 ```

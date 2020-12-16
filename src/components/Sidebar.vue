@@ -1,0 +1,68 @@
+<template>
+    <div>
+    <a v-b-toggle.sidebar-backdrop>
+        <b-icon class="ml-3 mt-2 h4 d-flex justify-content-center" icon="list" aria-hidden="true"></b-icon>
+    </a>
+    <b-sidebar id="sidebar-backdrop" title="Stories" :backdrop-variant="variant" backdrop shadow>
+      <div class="px-3 py-2">
+            <div class="accordion" role="tablist">
+                <b-card no-body class="mb-1">
+                <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button block v-b-toggle.accordion-1 variant="outline-dark">Level 1 
+                        <b-icon icon="caret-down-fill" aria-hidden="true"></b-icon>
+                    </b-button>                  
+                </b-card-header>
+
+                <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
+                    <b-card-body class="p-0">
+                        <b-button block variant="light">Cuento 1</b-button>
+                    </b-card-body>
+                        <hr>
+                    <b-card-body class="p-0">
+                        <b-button block variant="light">Cuento 2</b-button>
+                    </b-card-body>
+                </b-collapse>
+                </b-card>
+
+                <b-card no-body class="mb-1">
+                    <b-card-header header-tag="header" class="p-1" role="tab">
+                        <b-button block v-b-toggle.accordion-2 variant="outline-dark">Level 2
+                            <b-icon icon="caret-down-fill" aria-hidden="true"></b-icon>
+                        </b-button>
+                    </b-card-header>
+                    <b-collapse id="accordion-2" accordion="my-accordion2" role="tabpanel">
+                        <b-card-body class="p-0">
+                            <b-button block variant="light">Cuento 1</b-button>
+                        </b-card-body>
+                            <hr>
+                        <b-card-body class="p-0">
+                            <b-button block variant="light">Cuento 2</b-button>
+                        </b-card-body>
+                    </b-collapse>
+                </b-card>
+            </div>
+      </div>
+    </b-sidebar>
+  </div>
+</template>
+
+<script>
+export default {
+name:'Sidebar',
+    data() {
+      return {
+        variant: 'dark',
+      }
+    }
+}
+</script>
+
+<style scoped>
+a{
+    color: black;
+}
+hr{
+    margin: 0;
+}
+
+</style>
