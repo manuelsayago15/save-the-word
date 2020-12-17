@@ -4,9 +4,6 @@
     <Sidebar/>    
     <b-navbar-brand href="#" class="ml-2">Save the word</b-navbar-brand>
 
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-    <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown right class="mr-5 h4">
           <template #button-content >
@@ -17,7 +14,7 @@
           <b-dropdown-item href="#">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
-    </b-collapse>
+
   </b-navbar>
 </div>
 </template>

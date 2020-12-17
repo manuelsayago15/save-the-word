@@ -87,5 +87,13 @@ p{
     font-size: 24px;
     margin-left: 3em;
 }
+@media (max-width: 768px) { 
+    h2{
+        font-size: 3.5rem;
+    }
+    p{
+        margin-left: 1em;
+    }
+}
 
 </style>
