@@ -24,9 +24,24 @@ const routes = [
     component: () => import('../views/Home.vue')
   },
   {
-    path: '/level-1',
-    name: 'Level1',
-    component: () => import('../views/Level1.vue')
+    path: '/level-1.1',
+    name: 'Level1-1',
+    component: () => import('../views/Level1-1.vue')
+  },
+  {
+    path: '/level-1.2',
+    name: 'Level1-2',
+    component: () => import('../views/Level1-2.vue')
+  },
+  {
+    path: '/level-2.1',
+    name: 'Level2-1',
+    component: () => import('../views/Level2-1.vue')
+  },
+  {
+    path: '/level-2.2',
+    name: 'Level2-2',
+    component: () => import('../views/Level2-2.vue')
   }
 ]
 
