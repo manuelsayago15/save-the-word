@@ -42,6 +42,16 @@ const routes = [
     path: '/level-2.2',
     name: 'Level2-2',
     component: () => import('../views/Level2-2.vue')
+  },
+  {
+    path: '/my-list',
+    name: 'MyList',
+    component: () => import('@/views/MyList.vue')
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('@/views/Profile.vue')
   }
 ]
 

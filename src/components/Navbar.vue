@@ -9,8 +9,8 @@
           <template #button-content >
             <b-icon icon="person-fill" aria-hidden="true"></b-icon>
           </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">My list</b-dropdown-item>
+          <b-dropdown-item><router-link to="/profile">Profile</router-link></b-dropdown-item>
+          <b-dropdown-item><router-link to="/my-list">My list</router-link></b-dropdown-item>
           <b-dropdown-item href="#">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
