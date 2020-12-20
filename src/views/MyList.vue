@@ -7,7 +7,9 @@
                     <h1>MY LIST</h1>
                 </div>
                 <div class="col-lg-4 input-search">
-                    <input type="text" placeholder="Search a word">
+                    <input type="text" v-model="wordInput" ref="search" placeholder="Search a word" 
+                        @keyup="save()" 
+                        @change="getWord($refs.search.value)">
                 </div>
                 
             </div>
@@ -17,28 +19,18 @@
             <tr>
             <th scope="col">WORD</th>
             <th scope="col">DESCRIPTION</th>
+            <th scope="col">EXAMPLE</th>
             <th scope="col">TRANSLATION</th>
             <th scope="col">AUDIO</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody v-for="(word, index) in words" :key="index">
             <tr>
-            <th scope="row">save</th>
-            <td>Mark</td>
-            <td>Otto</td>
+            <th scope="row">{{word.wordData}}</th>
+            <td>{{word.meaning}}</td>
+            <td>{{word.example}}</td>
             <td>@mdo</td>
-            </tr>
-            <tr>
-            <th scope="row">hijack</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            </tr>
-            <tr>
-            <th scope="row">warehouse</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+            <td>@mdo</td>
             </tr>
         </tbody>
         </table>
@@ -46,6 +38,7 @@
 </template>
 <script>
 import Navbar from '@/components/Navbar';
+import { mapState, mapActions, mapMutations } from "vuex";
 export default {
     name: 'MyList',
     components: {
@@ -53,9 +46,26 @@ export default {
     },
     data () {
         return {
-            
+            wordInput: ''
         }
-    }
+    },
+
+    methods: {
+        ...mapMutations(['saveWord']),
+        ...mapActions(['getWord']),
+        
+        save(){
+            this.saveWord(this.wordInput);
+        }
+    },
+
+    computed: {
+        ...mapState(['word', 'words']),
+    },
+
+    created() {
+        
+        }
 }
 </script>
 <style scoped>
