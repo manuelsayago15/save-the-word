@@ -22,6 +22,7 @@
             <th scope="col">EXAMPLE</th>
             <th scope="col">TRANSLATION</th>
             <th scope="col">AUDIO</th>
+            <th scope="col">ACTIONS</th>
             </tr>
         </thead>
         <tbody v-for="(word, index) in words" :key="index">
@@ -30,7 +31,10 @@
             <td>{{word.meaning}}</td>
             <td>{{word.example}}</td>
             <td>@mdo</td>
-            <td>@mdo</td>
+            <td>
+                <b-icon icon="play-circle-fill" aria-hidden="true"></b-icon>
+                {{word.audio}}</td>
+                <td><b-icon icon="trash" aria-hidden="true"></b-icon></td>
             </tr>
         </tbody>
         </table>

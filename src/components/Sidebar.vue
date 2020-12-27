@@ -15,11 +15,11 @@
 
                 <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
                     <b-card-body class="p-0">
-                        <b-button block variant="light"><router-link to= "/level-1.1">The Tortoise and the Hare</router-link></b-button>
+                        <b-button block variant="light"><router-link to= "/levels/1/1">The Tortoise and the Hare</router-link></b-button>
                     </b-card-body>
                         <hr>
                     <b-card-body class="p-0">
-                        <b-button block variant="light"><router-link to= "/level-1.2">The Boy Who Cried Wolf</router-link></b-button>
+                        <b-button block variant="light"><router-link to= "/levels/1/2">The Boy Who Cried Wolf</router-link></b-button>
                     </b-card-body>
                 </b-collapse>
                 </b-card>
@@ -32,11 +32,11 @@
                     </b-card-header>
                     <b-collapse id="accordion-2" accordion="my-accordion2" role="tabpanel">
                         <b-card-body class="p-0">
-                            <b-button block variant="light"><router-link to= "/level-2.1">Foolish Imitation</router-link></b-button>
+                            <b-button block variant="light"><router-link to= "/levels/2/1">Foolish Imitation</router-link></b-button>
                         </b-card-body>
                             <hr>
                         <b-card-body class="p-0">
-                            <b-button block variant="light"><router-link to= "/level-2.2">Bad Temper</router-link></b-button>
+                            <b-button block variant="light"><router-link to= "/levels/2/2">Bad Temper</router-link></b-button>
                         </b-card-body>
                     </b-collapse>
                 </b-card>

@@ -12,34 +12,39 @@ const routes = [
   },
   {
     path: '/',
-    redirect: 'Login',
+    redirect: 'login',
   },
   {
     path: '*',
-    redirect: 'Login',
+    redirect: 'login',
+  },
+  // {
+  //   path: '/home',
+  //   name: 'Home',
+  //   component: () => import('../views/Home.vue')
+  // },
+  {
+    path: '/levels',
+    name: 'Levels',
+    component: () => import('../views/Levels.vue')
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: () => import('../views/Home.vue')
-  },
-  {
-    path: '/level-1.1',
+    path: '/levels/1/1',
     name: 'Level1-1',
     component: () => import('../views/Level1-1.vue')
   },
   {
-    path: '/level-1.2',
+    path: '/levels/1/2',
     name: 'Level1-2',
     component: () => import('../views/Level1-2.vue')
   },
   {
-    path: '/level-2.1',
+    path: '/levels/2/1',
     name: 'Level2-1',
     component: () => import('../views/Level2-1.vue')
   },
   {
-    path: '/level-2.2',
+    path: '/levels/2/2',
     name: 'Level2-2',
     component: () => import('../views/Level2-2.vue')
   },
