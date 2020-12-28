@@ -1,7 +1,7 @@
 <template>
     <div>
     <a v-b-toggle.sidebar-backdrop>
-        <b-icon class="ml-3 mt-2 h4 d-flex justify-content-center" icon="list" aria-hidden="true"></b-icon>
+        <b-icon class="ml-3 mt-2 h4 d-flex justify-content-center pointer" icon="list" aria-hidden="true"></b-icon>
     </a>
     <b-sidebar id="sidebar-backdrop" title="Stories" :backdrop-variant="variant" backdrop shadow>
       <div class="px-3 py-2">
@@ -63,6 +63,9 @@ a{
 }
 hr{
     margin: 0;
+}
+.pointer{
+    cursor: pointer;
 }
 
 </style>
