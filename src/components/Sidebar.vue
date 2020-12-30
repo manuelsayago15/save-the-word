@@ -58,6 +58,9 @@ name:'Sidebar',
 </script>
 
 <style scoped>
+#sidebar-backdrop{
+    background-color: burlywood;
+}
 a{
     color: black;
 }
