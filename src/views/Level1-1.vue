@@ -13,6 +13,7 @@
         </div>
         <div class="text-center" v-if="!show">
             <b-button @click="quiz" size="lg" class="my-5" variant="light">Go to quiz</b-button>
+            <b-button @click="test" size="lg" class="my-5" variant="light">TEST</b-button>
         </div>
     </div>
     <div v-if="show">
@@ -52,7 +53,7 @@ export default {
     },
     methods: {
         ...mapMutations(['saveWord']),
-        ...mapActions(['getWord']),
+        ...mapActions(['getWord', 'setWordDB', 'getWordDB']),
         quiz(){
             this.show= true
         },
@@ -89,11 +90,15 @@ export default {
         onHighlight(text) {
             console.log("highlight:", text);
         },
+
+        test() {
+            this.getWordDB();
+        }
     },
 
     computed: {
-        ...mapState(['word']),
-    }
+        ...mapState(['word', 'words', 'wordsArray']),
+    },
 }
 </script>
 

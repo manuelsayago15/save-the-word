@@ -23,7 +23,18 @@
             <th scope="col">ACTIONS</th>
             </tr>
         </thead>
-        <tbody v-for="(word, index) in words" :key="index">
+        <!-- <tbody v-for="(word, index) in words" :key="index">
+            <tr>
+            <th scope="row">{{word.wordData}}</th>
+            <td>{{word.meaning}}</td>
+            <td>{{word.example}}</td>
+            <td>
+                <b-icon icon="play-circle-fill" aria-hidden="true"></b-icon>
+                {{word.audio}}</td>
+                <td><b-icon icon="trash" aria-hidden="true"></b-icon></td>
+            </tr>
+        </tbody> -->
+        <tbody v-for="(word, index) in wordsArray" :key="index">
             <tr>
             <th scope="row">{{word.wordData}}</th>
             <td>{{word.meaning}}</td>
@@ -49,7 +60,7 @@ export default {
 
     methods: {
         ...mapMutations(['saveWord']),
-        ...mapActions(['getWord']),
+        ...mapActions(['getWord', 'getWordDB']),
         
         save(){
             this.saveWord(this.wordInput);
@@ -57,12 +68,12 @@ export default {
     },
 
     computed: {
-        ...mapState(['word', 'words']),
+        ...mapState(['word', 'words', 'wordsArray']),
     },
 
     created() {
-        
-        }
+        this.getWordDB();
+    }
 }
 </script>
 <style scoped>

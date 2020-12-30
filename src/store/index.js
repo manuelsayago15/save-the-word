@@ -7,9 +7,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     array: [],
-    words: [],
+    words: '',
     word: '',
-    testme: ''
+    wordsArray: [],
   },
   mutations: {
     saveWord(state, newWord) {
@@ -19,7 +19,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-      getWord: async function({state}, value) {
+      getWord: async function({state, dispatch}, value) {
         try{
           // console.log(state.word);
           // console.log(value);
@@ -38,12 +38,13 @@ export default new Vuex.Store({
           console.log("Meaning: " + meaning);
           console.log("Example: " + example);
           console.log("Audio: " + audio);
-          state.words.push({
+          state.words = {
             meaning,
             example,
             wordData,
             audio
-          })
+          }
+          dispatch('setWordDB', state.words);
         }catch(error) {
           Swal.fire({
             icon: 'error',
@@ -53,6 +54,43 @@ export default new Vuex.Store({
         }
         // console.log(state.words);
       },
+
+      async setWordDB ({state}) {
+        try {
+          const response = await fetch('https://save-the-word-40090-default-rtdb.firebaseio.com/words.json', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(state.words)
+          })
+
+          const dataDB = await response.json();
+          console.log(dataDB);
+          console.log(JSON.stringify(state.words));
+          JSON.stringify(dataDB)
+          console.log("test: " + state.words);
+          
+        } catch(error) {
+          console.log(error);
+        }
+      },
+
+      async getWordDB ({state}) {
+       
+          const response = await fetch('https://save-the-word-40090-default-rtdb.firebaseio.com/words.json');
+          const data = await response.json();
+          console.log("Data from Database" + data);
+          for (let key in data) {
+            console.log("DATA: " + JSON.stringify(data));
+            state.wordsArray.push(data[key]);
+          }
+          console.log("ARRAY: " + JSON.stringify(state.wordsArray));
+          
+
+          
+        
+      }
   },
   modules: {
   }
