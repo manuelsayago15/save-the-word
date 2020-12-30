@@ -2,7 +2,8 @@
 <div>
   <b-navbar toggleable="lg" type="light" variant="light">
     <Sidebar/>    
-    <b-navbar-brand href="#" class="ml-2">Save the word</b-navbar-brand>
+    <b-navbar-brand class="ml-2"><router-link class="title" to="/levels">Save the word</router-link>
+    </b-navbar-brand>
 
       <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown right class="mr-5 h4">
@@ -32,5 +33,8 @@ export default {
 
 
 <style scoped>
+.title{
+  color:black;
+}
 
 </style>

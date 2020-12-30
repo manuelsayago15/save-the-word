@@ -11,13 +11,23 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import firebase from 'firebase'
 import { firebaseConfig } from '@/config/firebaseConfig'
 
+//Element UI
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+//Firebase
+import firebase from 'firebase';
+import { firebaseConfig } from "./config/firebaseConfig";
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+Vue.use(ElementUI);
+
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 
 Vue.config.productionTip = false
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
 
 new Vue({
   router,

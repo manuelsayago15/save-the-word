@@ -1,9 +1,9 @@
 // Your web app's Firebase configuration
-export var firebaseConfig = {
-    apiKey: "AIzaSyAcO6d_YyJPQcre1Kf5a7hyWOij-ESYHFc",
-    authDomain: "save-the-word-a1baa.firebaseapp.com",
-    projectId: "save-the-word-a1baa",
-    storageBucket: "save-the-word-a1baa.appspot.com",
-    messagingSenderId: "206679406760",
-    appId: "1:206679406760:web:5ef4a0c30d14488124aa9d"
+export   var firebaseConfig = {
+  apiKey: "AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50",
+  authDomain: "save-the-word-40090.firebaseapp.com",
+  projectId: "save-the-word-40090",
+  storageBucket: "save-the-word-40090.appspot.com",
+  messagingSenderId: "309025870172",
+  appId: "1:309025870172:web:52024ef29dcc9f76b5b199"
 };

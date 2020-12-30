@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Navbar/>
         <div class="page-content page-container" id="page-content">
     <div class="padding">
         <div class="row container d-flex justify-content-center">
@@ -54,12 +53,8 @@
     </div>
 </template>
 <script>
-import Navbar from '@/components/Navbar';
 export default {
     name: 'Home',
-    components:{
-        Navbar
-    },
     data () {
         return {
 

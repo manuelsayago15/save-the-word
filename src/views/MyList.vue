@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Navbar/>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
@@ -20,7 +19,6 @@
             <th scope="col">WORD</th>
             <th scope="col">DESCRIPTION</th>
             <th scope="col">EXAMPLE</th>
-            <th scope="col">TRANSLATION</th>
             <th scope="col">AUDIO</th>
             <th scope="col">ACTIONS</th>
             </tr>
@@ -30,7 +28,6 @@
             <th scope="row">{{word.wordData}}</th>
             <td>{{word.meaning}}</td>
             <td>{{word.example}}</td>
-            <td>@mdo</td>
             <td>
                 <b-icon icon="play-circle-fill" aria-hidden="true"></b-icon>
                 {{word.audio}}</td>
@@ -41,13 +38,9 @@
     </div>
 </template>
 <script>
-import Navbar from '@/components/Navbar';
 import { mapState, mapActions, mapMutations } from "vuex";
 export default {
     name: 'MyList',
-    components: {
-        Navbar
-    },
     data () {
         return {
             wordInput: ''

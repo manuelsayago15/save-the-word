@@ -47,8 +47,8 @@ export default {
   methods: {
       onMouseup () {    
           const selection = window.getSelection();
-          console.log("hey");   
-          console.log(selection);
+          // console.log("hey");   
+          // console.log(selection);
           const selectionRange = selection.getRangeAt(0);  
         // startNode is the element that the selection starts in    
         const startNode = selectionRange.startContainer.parentNode; 

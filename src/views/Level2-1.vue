@@ -1,6 +1,5 @@
 <template>
 <div class="background">
-    <Navbar/>
         <!-- Tercer cuento -->
     <div class="container">
             <h1 class="text-center display-2">Level 2</h1>
@@ -39,13 +38,11 @@
 
 <script>
 import Swal from 'sweetalert2'
-import Navbar from '../components/Navbar.vue'
 import { mapMutations, mapActions } from "vuex";
 import HighlightTable from "@/components/HighlightTable";
 export default {
     name: 'Level2-1',
     components: {
-        Navbar,
         HighlightTable,
     },
     data() {
@@ -80,6 +77,11 @@ export default {
         onShare(text) {
             console.log("share:", text);
             this.getWord(text);
+            this.$notify({
+            title: 'Success',
+            message: 'Word added successfully',
+            type: 'success'
+            });
         },
         onHighlight(text) {
             console.log("highlight:", text);
