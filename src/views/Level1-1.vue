@@ -78,10 +78,12 @@ export default {
         onShare(text) {
             console.log("share:", text);
             this.getWord(text);
-                Swal.fire({
-                icon: 'success',
-                title: 'Word added successfully',
-                })
+            
+            this.$notify({
+            title: 'Success',
+            message: 'Word added successfully',
+            type: 'success'
+            });
             
         },
         onHighlight(text) {
