@@ -1,5 +1,7 @@
 <template>
 <div class="background">
+    <Navbar/>
+    <transition name="fade"> 
     <div class="container">
          <h1 class="text-center display-2">Level 1</h1>
         <div v-if="!show">
@@ -32,10 +34,12 @@
             <b-button @click="goBack">Try Again</b-button>
         </div>
     </div>
+    </transition>
 </div>
 </template>
 
 <script>
+import Navbar from '../components/Navbar.vue'
 import Swal from 'sweetalert2'
 import { mapMutations, mapActions } from "vuex";
 import HighlightTable from "@/components/HighlightTable";
@@ -43,6 +47,7 @@ export default {
 name:'Level1-2',
     components: {
         HighlightTable,
+        Navbar
     },
     data() {
         return {
@@ -102,6 +107,12 @@ p{
     font-family: 'Indie Flower', cursive;
     font-size: 24px;
     margin-left: 3em;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 @media (max-width: 768px) { 
     h2{

@@ -138,7 +138,7 @@ export default {
 	background-repeat: no-repeat;
 	background-position: 100% 50%;
   height: 100vh;
-  margin-right: -3.4999em;
+  margin-right: -7.4999em;
   } 
 
 #google{

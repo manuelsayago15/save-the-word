@@ -1,5 +1,7 @@
 <template>
   <div class="background">
+    <Navbar/>
+    <transition name="fade"> 
     <div class="container ">
       <h1 class="display-4 text-center py-5 margin">If there is a word you don’t understand, you can doubleclick on it and add it to your list!</h1>
 
@@ -40,16 +42,26 @@
           </b-card>
       </div>      
     </div>
-
+    </transition>
   </div>
 </template>
 <script>
+import Navbar from '../components/Navbar.vue'
 export default {
   name: 'Levels',
+  components:{
+    Navbar
+  }
 }
 </script>
 
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 .background{
   background-image: linear-gradient(rgba(248,201,255,.5), rgba(252, 255, 41,.5)), url('../assets/yellownotes.jpg');
   background-size: cover;
