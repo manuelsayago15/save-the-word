@@ -21,15 +21,11 @@ export default new Vuex.Store({
   actions: {
       getWord: async function({state, dispatch}, value) {
         try{
-          // console.log(state.word);
-          // console.log(value);
           if(value) {
             state.word = value;
-            // console.log(state.word);
           }
           const data = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + state.word);
           state.array = await data.json();
-          // console.log(state.words);
           let wordData = state.array[0].word;
           let meaning = state.array[0].meanings[0].definitions[0].definition;
           let example = state.array[0].meanings[0].definitions[0].example;
@@ -44,6 +40,7 @@ export default new Vuex.Store({
             wordData,
             audio
           }
+
           dispatch('setWordDB', state.words);
         }catch(error) {
           Swal.fire({
@@ -52,7 +49,6 @@ export default new Vuex.Store({
             text: 'Something went wrong, try again!',
           })
         }
-        // console.log(state.words);
       },
 
       async setWordDB ({state}) {
@@ -80,17 +76,14 @@ export default new Vuex.Store({
        
           const response = await fetch('https://save-the-word-40090-default-rtdb.firebaseio.com/words.json');
           const data = await response.json();
-          console.log("Data from Database" + data);
+         // console.log("Data from Database" + data);
           for (let key in data) {
-            console.log("DATA: " + JSON.stringify(data));
+            //console.log("DATA: " + JSON.stringify(data));
             state.wordsArray.push(data[key]);
           }
-          console.log("ARRAY: " + JSON.stringify(state.wordsArray));
-          
+          //console.log("ARRAY: " + JSON.stringify(state.wordsArray));
+      },
 
-          
-        
-      }
   },
   modules: {
   }

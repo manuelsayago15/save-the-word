@@ -14,7 +14,7 @@
                 
             </div>
         </div>
-        <table class="table">
+        <table class="table container">
             <thead>
                 <tr>
                 <th scope="col">WORD</th>
@@ -41,9 +41,11 @@
                 <td>{{word.meaning}}</td>
                 <td>{{word.example}}</td>
                 <td>
-                    <b-icon icon="play-circle-fill" aria-hidden="true"></b-icon>
-                    {{word.audio}}</td>
-                    <td><b-icon icon="trash" aria-hidden="true"></b-icon></td>
+                    {{word.audio}}
+                    <audio :src="word.audio" ref="audio" id="audio"></audio>
+                    <b-button @click="playAudio()"><b-icon icon="play-circle-fill" aria-hidden="true"></b-icon> </b-button> 
+                </td>
+                <td><b-button><b-icon icon="trash" aria-hidden="true"></b-icon></b-button></td>
                 </tr>
             </tbody>
         </table>
@@ -59,16 +61,19 @@ export default {
     },
     data () {
         return {
-            wordInput: ''
+            wordInput: '',
         }
     },
-
     methods: {
         ...mapMutations(['saveWord']),
         ...mapActions(['getWord', 'getWordDB']),
         
         save(){
             this.saveWord(this.wordInput);
+        },
+        playAudio(){
+            document.getElementById('audio').play();
+            //audio.play();
         }
     },
 
@@ -78,6 +83,7 @@ export default {
 
     created() {
         this.getWordDB();
+        
     }
 }
 </script>
@@ -90,7 +96,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100vh;
+    height: 100;
     }
     table{
         background-color: #FEE5FA;

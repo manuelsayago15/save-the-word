@@ -2,7 +2,6 @@
 <div class="background">
     <!-- Primer cuento -->
     <Navbar/>
-    <transition name="fade"> 
     <div class="container">
             <h1 class="text-center display-2">Level 1</h1>
         <div v-if="!show">
@@ -15,7 +14,6 @@
         </div>
         <div class="text-center" v-if="!show">
             <b-button @click="quiz" size="lg" class="my-5" variant="light">Go to quiz</b-button>
-            <b-button @click="test" size="lg" class="my-5" variant="light">TEST</b-button>
         </div>
     </div>
     <div v-if="show">
@@ -36,7 +34,6 @@
             <b-button @click="goBack">Try Again</b-button>
         </div>
     </div>
-    </transition>
 
 </div>
 </template>
@@ -96,10 +93,6 @@ export default {
         onHighlight(text) {
             console.log("highlight:", text);
         },
-
-        test() {
-            this.getWordDB();
-        }
     },
 
     computed: {
@@ -122,12 +115,7 @@ p{
     font-size: 24px;
     margin-left: 3em;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
+
 @media (max-width: 768px) { 
     h2{
         font-size: 3.5rem;
