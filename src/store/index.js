@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Swal from 'sweetalert2';
+const shortid = require('shortid');
 
 Vue.use(Vuex)
 
@@ -10,6 +11,8 @@ export default new Vuex.Store({
     words: '',
     word: '',
     wordsArray: [],
+    wordExist: '',
+    idArray: []
   },
   mutations: {
     saveWord(state, newWord) {
@@ -17,6 +20,11 @@ export default new Vuex.Store({
       state.word = newWord;
       console.log(state.word);
     },
+
+    setValueWordExist (state, newValue) {
+      state.wordExist = newValue;
+      console.log(state.wor);
+    }
   },
   actions: {
       getWord: async function({state, dispatch}, value) {
@@ -38,14 +46,18 @@ export default new Vuex.Store({
           console.log("Meaning: " + meaning);
           console.log("Example: " + example);
           console.log("Audio: " + audio);
+          let id = shortid.generate();
+          console.log("ID: " + id);
           state.words = {
+            id,
             meaning,
             example,
             wordData,
             audio
           }
           dispatch('setWordDB', state.words);
-        }catch(error) {
+        } catch(error) {
+          state.wordExist = false;
           Swal.fire({
             icon: 'error',
             title: 'No Definitions Found',
@@ -67,6 +79,8 @@ export default new Vuex.Store({
 
           const dataDB = await response.json();
           console.log(dataDB);
+          console.log(dataDB.name);
+          state.idArray.push(dataDB);
           console.log(JSON.stringify(state.words));
           JSON.stringify(dataDB)
           console.log("test: " + state.words);
@@ -86,9 +100,9 @@ export default new Vuex.Store({
             state.wordsArray.push(data[key]);
           }
           console.log("ARRAY: " + JSON.stringify(state.wordsArray));
-          
+      },
 
-          
+      async deleteWordDB ({state}) {
         
       }
   },

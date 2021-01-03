@@ -8,8 +8,8 @@
                 </div>
                 <div class="col-lg-4 input-search">
                     <input type="text" v-model="wordInput" ref="search" placeholder="Search a word" 
-                        @keyup="save()" 
-                        @change="getWord($refs.search.value)">
+                        @keyup="save()">
+                        <!-- @change="getWord($refs.search.value)"> -->
                 </div>
                 
             </div>
@@ -37,11 +37,12 @@
             </tbody> -->
             <tbody v-for="(word, index) in wordsArray" :key="index">
                 <tr>
+                    {{index}}
                 <th scope="row">{{word.wordData}}</th>
                 <td>{{word.meaning}}</td>
                 <td>{{word.example}}</td>
                 <td>
-                    <b-icon icon="play-circle-fill" aria-hidden="true"></b-icon>
+                    <b-icon icon="play-circle-fill" aria-hidden="true" ></b-icon>
                     {{word.audio}}</td>
                     <td><b-icon icon="trash" aria-hidden="true"></b-icon></td>
                 </tr>
@@ -69,6 +70,7 @@ export default {
         
         save(){
             this.saveWord(this.wordInput);
+            
         }
     },
 

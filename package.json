@@ -17,6 +17,7 @@
     "firebase": "^8.2.1",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
+    "shortid": "^2.2.16",
     "sweetalert2": "^10.12.5",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.0",
