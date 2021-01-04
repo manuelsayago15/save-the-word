@@ -8,7 +8,6 @@
             <b-button class="mt-3 mr-4" variant="warning">Register</b-button>
         </div>
         <h1 id="title" variant="secondary"  class="display-1 font-weight-bold mt-5">Save <br> the <br> word</h1>
-        <b-button id="google-button" variant="outline-dark">Sign in with <img id="google" src="../assets/google.jpg" alt="Google Logo"> </b-button>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-12 d-none d-sm-block">
         <div id="yellownote">

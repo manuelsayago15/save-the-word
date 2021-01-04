@@ -23,11 +23,11 @@
             <div class="card-body">
                 <div class="form-check form-check-inline text-center">
                     <label class="form-check-label mr-2" for="defaultCheck1">True</label>
-                    <input @change="good" class="form-check-input" type="radio" value="true" id="defaultCheck1">
+                    <input @change="bad" class="form-check-input" type="radio" value="true" id="defaultCheck1">
                 </div>
                 <div class="form-check  form-check-inline text-center">
                     <label class="form-check-label mr-2" for="defaultCheck2">False</label>
-                    <input @change="bad" class="form-check-input" type="radio" value="false" id="defaultCheck2">
+                    <input @change="good" class="form-check-input" type="radio" value="false" id="defaultCheck2">
                 </div>
             </div>
             <b-button @click="goBack">Try Again</b-button>
