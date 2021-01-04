@@ -3,7 +3,7 @@
     <a v-b-toggle.sidebar-backdrop>
         <b-icon class="ml-3 mt-2 h4 d-flex justify-content-center pointer" icon="list" aria-hidden="true"></b-icon>
     </a>
-    <b-sidebar id="sidebar-backdrop" title="Stories" :backdrop-variant="variant" backdrop shadow>
+    <b-sidebar id="sidebar-backdrop" title="Stories" :backdrop-variant="variant" bg-variant="warning" backdrop shadow>
       <div class="px-3 py-2">
             <div class="accordion" role="tablist">
                 <b-card no-body class="mb-1">
@@ -58,8 +58,11 @@ name:'Sidebar',
 </script>
 
 <style scoped>
-.b-sidebar-body{
-    background-color: red;
+.b-sidebar > .bg-light > div > .b-sidebar-body    {
+    background-color: red !important;
+}
+.accordion > .card > .card-header{
+    padding: 0 !important;
 }
 a{
     color: black;
