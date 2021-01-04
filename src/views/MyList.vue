@@ -14,7 +14,7 @@
                 
             </div>
         </div>
-        <table class="table">
+        <table class="table container">
             <thead>
                 <tr>
                 <th scope="col">WORD</th>
@@ -37,14 +37,17 @@
             </tbody> -->
             <tbody v-for="(word, index) in wordsArray" :key="index">
                 <tr>
-                    {{index}}
+                    <!-- {{word.id}} -->
+                    <!-- {{index}} -->
                 <th scope="row">{{word.wordData}}</th>
                 <td>{{word.meaning}}</td>
                 <td>{{word.example}}</td>
                 <td>
-                    <b-icon icon="play-circle-fill" aria-hidden="true" ></b-icon>
-                    {{word.audio}}</td>
-                    <td><b-icon icon="trash" aria-hidden="true"></b-icon></td>
+                    <audio :src="word.audio" ref="audio" id="audio"></audio>
+                    <b-button @click="playAudio()"><b-icon icon="play-circle-fill" aria-hidden="true"></b-icon> </b-button> 
+                </td>
+                <td><b-button @click="deleteWords(word.id)"><b-icon icon="trash" aria-hidden="true" ></b-icon></b-button></td>
+
                 </tr>
             </tbody>
         </table>
@@ -53,6 +56,7 @@
 <script>
 import Navbar from '../components/Navbar.vue'
 import { mapState, mapActions, mapMutations } from "vuex";
+import Swal from 'sweetalert2';
 export default {
     name: 'MyList',
     components:{
@@ -60,17 +64,42 @@ export default {
     },
     data () {
         return {
-            wordInput: ''
+            wordInput: '',
         }
     },
-
     methods: {
-        ...mapMutations(['saveWord']),
-        ...mapActions(['getWord', 'getWordDB']),
+        ...mapMutations(['saveWord', 'delete']),
+        ...mapActions(['getWord', 'getWordDB', 'deleteWordDB']),
         
         save(){
             this.saveWord(this.wordInput);
-            
+
+        },
+
+        deleteWords(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    this.deleteWordDB(id);
+                    Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                    )
+                }
+            })
+        },
+
+        playAudio(){
+            document.getElementById('audio').play();
+            //audio.play();
         }
     },
 
@@ -80,6 +109,7 @@ export default {
 
     created() {
         this.getWordDB();
+        
     }
 }
 </script>
@@ -92,7 +122,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100vh;
+    height: 100;
     }
     table{
         background-color: #FEE5FA;

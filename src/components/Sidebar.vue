@@ -58,8 +58,8 @@ name:'Sidebar',
 </script>
 
 <style scoped>
-#sidebar-backdrop{
-    background-color: burlywood;
+.b-sidebar-body{
+    background-color: red;
 }
 a{
     color: black;

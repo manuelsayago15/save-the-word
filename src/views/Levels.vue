@@ -51,7 +51,14 @@ export default {
   name: 'Levels',
   components:{
     Navbar
-  }
+  },
+
+  data() {
+    return {
+
+    }
+  },
+  
 }
 </script>
 

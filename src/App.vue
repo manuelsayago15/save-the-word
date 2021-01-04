@@ -2,7 +2,7 @@
   <div id="app">
       <!-- <Navbar/>
     <transition name="fade"> -->
-      <router-view></router-view>
+      <router-view :keys="$route.fullPath"></router-view>
     <!-- </transition> -->
   </div>
 </template>

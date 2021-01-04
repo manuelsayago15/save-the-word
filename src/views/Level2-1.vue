@@ -2,7 +2,6 @@
 <div class="background">
         <!-- Tercer cuento -->
             <Navbar/>
-    <transition name="fade"> 
     <div class="container">
             <h1 class="text-center display-2">Level 2</h1>
         <div v-if="!show">
@@ -35,7 +34,6 @@
             <b-button @click="goBack">Try Again</b-button>
         </div>
     </div>
-    </transition>
 </div>
 </template>
 
@@ -108,12 +106,6 @@ p{
     font-family: 'Indie Flower', cursive;
     font-size: 24px;
     margin-left: 3em;
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
 }
 @media (max-width: 768px) { 
     h2{

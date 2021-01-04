@@ -35,22 +35,33 @@
           </button>
         </div>
         <div class="modal-body">
-          
+          <form @submit.prevent="loginProcess">
             <div class="form-group">
               <!-- <label for="exampleDropdownFormEmail2">Email address</label> -->
-              <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="Email Address">
+              <input 
+                type="email" 
+                class="form-control" 
+                id="exampleDropdownFormEmail" 
+                placeholder="Email Address"
+                v-model.trim="email">
             </div>
             <div class="form-group">
               <!-- <label for="exampleDropdownFormPassword2">Password</label> -->
-              <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="exampleDropdownFormPassword" 
+                placeholder="Password"
+                v-model.trim="pass1">
             </div>
-            <div class="form-check">
+            <!-- <div class="form-check">
               <input type="checkbox" class="form-check-input" id="dropdownCheck2">
               <label class="form-check-label" for="dropdownCheck2">
                 Remember me
               </label>
-            </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
+            </div> -->
+            <button type="submit" class="btn btn-primary" :disabled="blockLogin">Sign in</button>
+          </form>
           
         </div>
         <!-- <div class="modal-footer">
@@ -73,20 +84,36 @@
           </button>
         </div>
         <div class="modal-body">
-          
+          <form @submit.prevent="formProcess">
             <div class="form-group">
               <!-- <label for="exampleDropdownFormEmail2">Email address</label> -->
-              <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="Email Address">
+              <input 
+                type="email" 
+                class="form-control" 
+                id="exampleDropdownFormEmail2" 
+                placeholder="Email Address"
+                v-model.trim="email">
             </div>
             <div class="form-group">
               <!-- <label for="exampleDropdownFormPassword2">Password</label> -->
-              <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="exampleDropdownFormPassword1" 
+                placeholder="Password"
+                v-model.trim="pass1">
             </div>
             <div class="form-group">
               <!-- <label for="exampleDropdownFormPassword2">Repeat Password</label> -->
-              <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Repeat Password">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="exampleDropdownFormPassword2" 
+                placeholder="Repeat Password"
+                v-model.trim="pass2">
             </div>
-            <button type="submit" class="btn btn-primary">Sign up</button>
+            <button type="submit" class="btn btn-primary" :disabled="block">Sign up</button>
+          </form>
           
         </div>
         <!-- <div class="modal-footer">
@@ -100,9 +127,57 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
+  components: {
 
+  },
+  data () {
+    return {
+      email: '',
+      pass1: '',
+      pass2: ''
+    }
+  },
+
+  methods: {
+    ...mapActions(['userRegister', 'userLogin']),
+    formProcess() {
+      this.userRegister({email: this.email, password: this.pass1})
+      this.email = '',
+      this.pass1 = '',
+      this.pass2 = ''
+    },
+
+    loginProcess() {
+      this.userLogin({email: this.email, password: this.pass1})
+      this.email = '',
+      this.pass1 = ''
+    }
+  },
+
+  computed: {
+    block () {
+      if(!this.email.includes('@')){
+        return true
+      }
+      if (this.pass1.length > 5 && this.pass1 === this.pass2) {
+        return false
+      }
+      return true
+    },
+
+    blockLogin () {
+      if(!this.email.includes('@')){
+        return true
+      }
+      if (this.pass1.length > 5) {
+        return false
+      }
+      return true
+    }
+  }
 }
 </script>
 <style scoped>

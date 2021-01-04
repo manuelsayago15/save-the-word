@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Swal from 'sweetalert2';
+import router from '../router';
 const shortid = require('shortid');
 
 Vue.use(Vuex)
@@ -12,32 +13,35 @@ export default new Vuex.Store({
     word: '',
     wordsArray: [],
     wordExist: '',
-    idArray: []
+    user: null,
   },
   mutations: {
+    setUser (state, payload) {
+      state.user = payload
+    },
     saveWord(state, newWord) {
       console.log(newWord);
       state.word = newWord;
       console.log(state.word);
     },
 
+    deleteWord(state, id) {
+      state.wordsArray = state.wordsArray.filter(item => item.id !== id);
+    },
+
     setValueWordExist (state, newValue) {
       state.wordExist = newValue;
-      console.log(state.wor);
+      console.log(state.wordExist);
     }
   },
   actions: {
       getWord: async function({state, dispatch}, value) {
         try{
-          // console.log(state.word);
-          // console.log(value);
           if(value) {
             state.word = value;
-            // console.log(state.word);
           }
           const data = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + state.word);
           state.array = await data.json();
-          // console.log(state.words);
           let wordData = state.array[0].word;
           let meaning = state.array[0].meanings[0].definitions[0].definition;
           let example = state.array[0].meanings[0].definitions[0].example;
@@ -55,6 +59,7 @@ export default new Vuex.Store({
             wordData,
             audio
           }
+
           dispatch('setWordDB', state.words);
         } catch(error) {
           state.wordExist = false;
@@ -64,13 +69,13 @@ export default new Vuex.Store({
             text: 'Something went wrong, try again!',
           })
         }
-        // console.log(state.words);
       },
 
       async setWordDB ({state}) {
+        console.log("words.id: " + state.words.id);
         try {
-          const response = await fetch('https://save-the-word-40090-default-rtdb.firebaseio.com/words.json', {
-            method: 'POST',
+          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.words.id}.json`, {
+            method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
             },
@@ -80,7 +85,6 @@ export default new Vuex.Store({
           const dataDB = await response.json();
           console.log(dataDB);
           console.log(dataDB.name);
-          state.idArray.push(dataDB);
           console.log(JSON.stringify(state.words));
           JSON.stringify(dataDB)
           console.log("test: " + state.words);
@@ -94,16 +98,72 @@ export default new Vuex.Store({
        
           const response = await fetch('https://save-the-word-40090-default-rtdb.firebaseio.com/words.json');
           const data = await response.json();
-          console.log("Data from Database" + data);
+         // console.log("Data from Database" + data);
           for (let key in data) {
-            console.log("DATA: " + JSON.stringify(data));
+            //console.log("DATA: " + JSON.stringify(data));
             state.wordsArray.push(data[key]);
           }
           console.log("ARRAY: " + JSON.stringify(state.wordsArray));
       },
 
-      async deleteWordDB ({state}) {
-        
+      async deleteWordDB ( {commit}, id) {
+        console.log(id);
+        try{
+          await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${id}.json`, {
+            method: 'DELETE'
+          })
+          console.log("ID: " + id);
+          commit('deleteWord', id);
+        } catch (error) {
+            console.log(error);
+        }
+      },
+
+      async userRegister( {commit}, user) {
+        console.log(user);
+        try {
+          const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
+            method: 'POST',
+            body: JSON.stringify({
+              email: user.email,
+              password: user.password,
+              returnSecureToken: true
+            })
+          })
+          const userDB = await response.json();
+          console.log(userDB);
+          if (userDB.error) {
+            console.log(userDB.error);
+            return
+          }
+          commit('setUser', userDB);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      async userLogin ( {commit}, user) {
+        console.log(user);
+        try {
+          const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
+            method: 'POST',
+            body: JSON.stringify({
+              email: user.email,
+              password: user.password,
+              returnSecureToken: true
+            })
+          })
+          const userDB = await response.json();
+          console.log(userDB);
+          if (userDB.error) {
+            console.log(userDB.error);
+            return
+          }
+          commit('setUser', userDB);
+          router.push('levels');
+        } catch (error) {
+          console.log(error);
+        }
       }
   },
   modules: {
