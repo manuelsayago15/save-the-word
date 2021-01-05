@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Swal from 'sweetalert2';
 import router from '../router/index.js';
+import { use } from 'vue/types/umd';
 const shortid = require('shortid');
 
 Vue.use(Vuex)
@@ -45,12 +46,12 @@ export default new Vuex.Store({
           let meaning = state.array[0].meanings[0].definitions[0].definition;
           let example = state.array[0].meanings[0].definitions[0].example;
           let audio = state.array[0].phonetics[0].audio;
-         // console.log("Word: " + wordData);
-         // console.log("Meaning: " + meaning);
-         // console.log("Example: " + example);
-          //console.log("Audio: " + audio);
+         console.log("Word: " + wordData);
+         console.log("Meaning: " + meaning);
+         console.log("Example: " + example);
+          console.log("Audio: " + audio);
           let id = shortid.generate();
-         // console.log("ID: " + id);
+         console.log("ID: " + id);
           state.words = {
             id,
             meaning,
@@ -73,7 +74,7 @@ export default new Vuex.Store({
       async setWordDB ({state}) {
         //console.log("words.id: " + state.words.id);
         try {
-          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.words.id}.json`, {
+          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}/${state.words.id}.json?auth=${state.user.idToken}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
@@ -93,9 +94,15 @@ export default new Vuex.Store({
         }
       },
 
-      async getWordDB ({state}) {
-       
-          const response = await fetch('https://save-the-word-40090-default-rtdb.firebaseio.com/words.json');
+      async getWordDB ({commit, state}) {
+        if(localStorage.getItem('user')){
+          console.log(state.user);
+          commit('setUser', JSON.parse(localStorage.getItem('user')));
+        } else {
+          console.log(state.user);
+          return commit('setUser', null);
+        }
+          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}.json?auth=${state.user.idToken}`);
           const data = await response.json();
          // console.log("Data from Database" + data);
          let Array = []
@@ -107,10 +114,10 @@ export default new Vuex.Store({
           //console.log("ARRAY: " + JSON.stringify(state.wordsArray));
       },
 
-      async deleteWordDB ( {commit}, id) {
+      async deleteWordDB ( {commit, state}, id) {
         //console.log(id);
         try{
-          await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${id}.json`, {
+          await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}/${id}.json?auth=${state.user.idToken}`, {
             method: 'DELETE'
           })
           //console.log("ID: " + id);
@@ -126,6 +133,7 @@ export default new Vuex.Store({
           const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
             method: 'POST',
             body: JSON.stringify({
+              displayName: user.displayName,
               email: user.email,
               password: user.password,
               returnSecureToken: true
@@ -138,12 +146,13 @@ export default new Vuex.Store({
             return
           }
           commit('setUser', userDB);
+          localStorage.setItem('user', JSON.stringify(userDB));
         } catch (error) {
           console.log(error);
         }
       },
 
-      async userLogin ( {commit}, user) {
+      async userLogin ( {commit, state}, user) {
         console.log(user);
         try {
           const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
@@ -162,10 +171,50 @@ export default new Vuex.Store({
           }
           commit('setUser', userDB);
           router.push('/levels');
+          localStorage.setItem('user', JSON.stringify(userDB));
+          localStorage.setItem('test', JSON.stringify(state.user));
         } catch (error) {
           console.log(error);
         }
+      },
+
+      async update ( {commit, state}, user) {
+        console.log(user);
+        try {
+          const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50/${state.user.idToken}`, {
+            method: 'POST',
+            body: JSON.stringify({
+              displayName: user.displayName
+            })
+          })
+          const userDB = await response.json();
+          console.log(userDB);
+          if (userDB.error) {
+            console.log(userDB.error);
+            return
+          }
+          commit('setUser', userDB);
+          router.push('/levels');
+          localStorage.setItem('user', JSON.stringify(userDB));
+          localStorage.setItem('test', JSON.stringify(state.user));
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      
+      logout( {commit, state} ){
+        console.log(state.user);
+        commit('setUser', null);
+        console.log("user after null asigned: " + state.user);
+        router.push('/');
+        localStorage.removeItem('user')
       }
+  },
+
+  getters: {
+    loggedUser(state) {
+      return !!state.user;
+    }
   },
   modules: {
   }

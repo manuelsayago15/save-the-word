@@ -87,6 +87,15 @@
             <div class="form-group">
               <!-- <label for="exampleDropdownFormEmail2">Email address</label> -->
               <input 
+                type="text" 
+                class="form-control" 
+                id="name" 
+                placeholder="Your Name"
+                v-model.trim="name">
+            </div>
+            <div class="form-group">
+              <!-- <label for="exampleDropdownFormEmail2">Email address</label> -->
+              <input 
                 type="email" 
                 class="form-control" 
                 id="exampleDropdownFormEmail2" 
@@ -136,6 +145,7 @@ export default {
   },
   data () {
     return {
+      name: '',
       email: '',
       pass1: '',
       pass2: '',
@@ -145,7 +155,8 @@ export default {
   methods: {
     ...mapActions(['userRegister', 'userLogin']),
     formProcess() {
-      this.userRegister({email: this.email, password: this.pass1})
+      this.userRegister({name: this.name, email: this.email, password: this.pass1})
+      this.name = '',
       this.email = '',
       this.pass1 = '',
       this.pass2 = '',
