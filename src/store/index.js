@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Swal from 'sweetalert2';
 import router from '../router/index.js';
-import { use } from 'vue/types/umd';
 const shortid = require('shortid');
 
 Vue.use(Vuex)
@@ -15,6 +14,9 @@ export default new Vuex.Store({
     wordsArray: [],
     wordExist: '',
     user: null,
+    wordsDB: [],
+    count: 0,
+    same: false
   },
   mutations: {
     setUser (state, payload) {
@@ -35,6 +37,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
+      //API consume dictionary
       getWord: async function({state, dispatch}, value) {
         try{
           if(value) {
@@ -71,29 +74,82 @@ export default new Vuex.Store({
         }
       },
 
-      async setWordDB ({state}) {
-        //console.log("words.id: " + state.words.id);
+      async consumeDB({state}) {
         try {
-          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}/${state.words.id}.json?auth=${state.user.idToken}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(state.words)
-          })
-
-          const dataDB = await response.json();
-          console.log(dataDB);
-          //console.log(dataDB.name);
-          //console.log(JSON.stringify(state.words));
-          JSON.stringify(dataDB)
-         // console.log("test: " + state.words);
+          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}.json?auth=${state.user.idToken}`);
+          const data = await response.json();
+          console.log(data);
+          let Array = []
+          for (let key in data) {
+            if(data[key].wordData === state.words.wordData) {
+              console.log("ES IGUAL");
+              state.same = true;
+              console.log(state.same);
+            } else {
+              Array.push(data[key]);
+              console.log("PUSH DE PALABRA DESDE DB " + JSON.stringify(state.wordsDB));
+              console.log("data[key]: " + JSON.stringify(data[key]));
+            }
+          }
+          state.wordsDB = Array;
+          console.log("PALABRAS DESDE DB: " + JSON.stringify(state.wordsDB));
+          // if(state.wordsDB.length > 0){
+          //   for (var i = 0; i < state.wordsDB.length; i++) {
+          //     console.log("wordData from wordsDB: " + JSON.stringify(state.wordsDB[i].wordData));
+          //   }
+          // }
+         
+          console.log("PALABRA RECIEN AGREGADA: EN DB" + state.words.wordData);
           
-        } catch(error) {
+          const found = state.wordsDB.find(element => element == 44);
+
+          console.log(found);
+          
+          console.log("Data from wordsDB: " + JSON.stringify(state.wordsDB));
+          console.log("wordsDB length: " + state.wordsDB.length);
+        } catch (error) {
           console.log(error);
         }
       },
+       //Save word in DataBase
+      async setWordDB ({state, dispatch}) {
+        //console.log("words.id: " + state.words.id);
+        dispatch('consumeDB', state.words.wordData);
+        setTimeout( () => dispatch('setWordValidation'), 2000);
+        console.log(state.wordsDB.length);
+        
 
+      },
+
+      async setWordValidation({state}) {
+        if(state.same == false){
+          try {
+            const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}/${state.words.id}.json?auth=${state.user.idToken}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(state.words)
+            })
+  
+            const dataDB = await response.json();
+            console.log("Response setWordDB: " + JSON.stringify(dataDB));
+            //console.log(dataDB.name);
+            //console.log(JSON.stringify(state.words));
+            JSON.stringify(dataDB)
+           // console.log("test: " + state.words);
+            
+          } catch(error) {
+            console.log(error);
+          }
+
+        } else {
+          state.same = false;
+          return
+        }
+      },
+
+      //Get words from Database
       async getWordDB ({commit, state}) {
         if(localStorage.getItem('user')){
           console.log(state.user);
@@ -102,18 +158,20 @@ export default new Vuex.Store({
           console.log(state.user);
           return commit('setUser', null);
         }
-          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}.json?auth=${state.user.idToken}`);
-          const data = await response.json();
-         // console.log("Data from Database" + data);
+        const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}.json?auth=${state.user.idToken}`);
+        const data = await response.json();
+        console.log("Data from Database" + data);
          let Array = []
           for (let key in data) {
-            //console.log("DATA: " + JSON.stringify(data));
+            console.log("DATA: " + JSON.stringify(data));
+            console.log(data[key].wordData);
             Array.push(data[key]);
           }
           state.wordsArray = Array
           //console.log("ARRAY: " + JSON.stringify(state.wordsArray));
       },
 
+      //Delete word from Database
       async deleteWordDB ( {commit, state}, id) {
         //console.log(id);
         try{
@@ -127,6 +185,7 @@ export default new Vuex.Store({
         }
       },
 
+      //User register method
       async userRegister( {commit}, user) {
         console.log(user);
         try {
@@ -152,6 +211,7 @@ export default new Vuex.Store({
         }
       },
 
+      //User login method
       async userLogin ( {commit, state}, user) {
         console.log(user);
         try {
@@ -202,6 +262,7 @@ export default new Vuex.Store({
         }
       },
       
+      //Logout method
       logout( {commit, state} ){
         console.log(state.user);
         commit('setUser', null);
