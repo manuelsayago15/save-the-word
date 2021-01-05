@@ -78,7 +78,7 @@ export default {
         this.x = x + (width / 2);  
         this.y = y + window.scrollY - 10;
         this.selectedText = selection.toString();
-        console.log(this.selectedText);
+        //console.log(this.selectedText);
         this.showMenu = true;
     },
 

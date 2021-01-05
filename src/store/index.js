@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Swal from 'sweetalert2';
-import router from '../router';
+import router from '../router/index.js';
 const shortid = require('shortid');
 
 Vue.use(Vuex)
@@ -19,16 +19,15 @@ export default new Vuex.Store({
     setUser (state, payload) {
       state.user = payload
     },
+    //Buscador
     saveWord(state, newWord) {
       console.log(newWord);
       state.word = newWord;
       console.log(state.word);
     },
-
     deleteWord(state, id) {
       state.wordsArray = state.wordsArray.filter(item => item.id !== id);
     },
-
     setValueWordExist (state, newValue) {
       state.wordExist = newValue;
       console.log(state.wordExist);
@@ -46,12 +45,12 @@ export default new Vuex.Store({
           let meaning = state.array[0].meanings[0].definitions[0].definition;
           let example = state.array[0].meanings[0].definitions[0].example;
           let audio = state.array[0].phonetics[0].audio;
-          console.log("Word: " + wordData);
-          console.log("Meaning: " + meaning);
-          console.log("Example: " + example);
-          console.log("Audio: " + audio);
+         // console.log("Word: " + wordData);
+         // console.log("Meaning: " + meaning);
+         // console.log("Example: " + example);
+          //console.log("Audio: " + audio);
           let id = shortid.generate();
-          console.log("ID: " + id);
+         // console.log("ID: " + id);
           state.words = {
             id,
             meaning,
@@ -63,16 +62,16 @@ export default new Vuex.Store({
           dispatch('setWordDB', state.words);
         } catch(error) {
           state.wordExist = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'No Definitions Found',
-            text: 'Something went wrong, try again!',
-          })
+            Swal.fire({
+              icon: 'error',
+              title: 'No Definitions Found',
+              text: 'Something went wrong, try again!',
+            })
         }
       },
 
       async setWordDB ({state}) {
-        console.log("words.id: " + state.words.id);
+        //console.log("words.id: " + state.words.id);
         try {
           const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.words.id}.json`, {
             method: 'PUT',
@@ -84,10 +83,10 @@ export default new Vuex.Store({
 
           const dataDB = await response.json();
           console.log(dataDB);
-          console.log(dataDB.name);
-          console.log(JSON.stringify(state.words));
+          //console.log(dataDB.name);
+          //console.log(JSON.stringify(state.words));
           JSON.stringify(dataDB)
-          console.log("test: " + state.words);
+         // console.log("test: " + state.words);
           
         } catch(error) {
           console.log(error);
@@ -99,20 +98,22 @@ export default new Vuex.Store({
           const response = await fetch('https://save-the-word-40090-default-rtdb.firebaseio.com/words.json');
           const data = await response.json();
          // console.log("Data from Database" + data);
+         let Array = []
           for (let key in data) {
             //console.log("DATA: " + JSON.stringify(data));
-            state.wordsArray.push(data[key]);
+            Array.push(data[key]);
           }
-          console.log("ARRAY: " + JSON.stringify(state.wordsArray));
+          state.wordsArray = Array
+          //console.log("ARRAY: " + JSON.stringify(state.wordsArray));
       },
 
       async deleteWordDB ( {commit}, id) {
-        console.log(id);
+        //console.log(id);
         try{
           await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${id}.json`, {
             method: 'DELETE'
           })
-          console.log("ID: " + id);
+          //console.log("ID: " + id);
           commit('deleteWord', id);
         } catch (error) {
             console.log(error);
@@ -160,7 +161,7 @@ export default new Vuex.Store({
             return
           }
           commit('setUser', userDB);
-          router.push('levels');
+          router.push('/levels');
         } catch (error) {
           console.log(error);
         }

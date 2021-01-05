@@ -4,13 +4,13 @@
          <div class="container">
             <div class="row my-4">
                 <div class="col-lg-8">
-                    <h1 class="ml-5">MY LIST</h1>
+                    <h1 class="ml-5 text-center">MY LIST</h1>
                 </div>
-                <div class="col-lg-4 input-search">
+                <!-- <div class="col-lg-4 input-search">
                     <input type="text" v-model="wordInput" ref="search" placeholder="Search a word" 
                         @keyup="save()">
-                        <!-- @change="getWord($refs.search.value)"> -->
-                </div>
+                        @change="getWord($refs.search.value)">
+                </div> -->
                 
             </div>
         </div>
@@ -43,8 +43,8 @@
                 <td>{{word.meaning}}</td>
                 <td>{{word.example}}</td>
                 <td>
-                    <audio :src="word.audio" ref="audio" id="audio"></audio>
-                    <b-button @click="playAudio()"><b-icon icon="play-circle-fill" aria-hidden="true"></b-icon> </b-button> 
+                    <audio :src="word.audio" ref="audio" class="audio"></audio>
+                    <b-button @click="playAudio(index)"><b-icon icon="play-circle-fill" aria-hidden="true"></b-icon> </b-button> 
                 </td>
                 <td><b-button @click="deleteWords(word.id)"><b-icon icon="trash" aria-hidden="true" ></b-icon></b-button></td>
 
@@ -97,20 +97,19 @@ export default {
             })
         },
 
-        playAudio(){
-            document.getElementById('audio').play();
-            //audio.play();
+        playAudio(index){
+            document.getElementsByClassName('audio')[index].play();
         }
     },
 
     computed: {
         ...mapState(['word', 'words', 'wordsArray']),
-    },
 
+    },
     created() {
         this.getWordDB();
-        
     }
+
 }
 </script>
 <style scoped>

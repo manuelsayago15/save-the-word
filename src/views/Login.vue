@@ -126,7 +126,9 @@
 </template>
 
 <script>
+import $ from 'jquery'
 import { mapActions } from 'vuex'
+import Swal from 'sweetalert2'
 export default {
   name: 'Login',
   components: {
@@ -136,7 +138,7 @@ export default {
     return {
       email: '',
       pass1: '',
-      pass2: ''
+      pass2: '',
     }
   },
 
@@ -146,13 +148,19 @@ export default {
       this.userRegister({email: this.email, password: this.pass1})
       this.email = '',
       this.pass1 = '',
-      this.pass2 = ''
+      this.pass2 = '',
+        Swal.fire({
+          icon: 'success',
+          title: 'Your account has been successfully created, now sing in!',
+        })
+      $('#registerModal').modal('hide');
     },
 
     loginProcess() {
       this.userLogin({email: this.email, password: this.pass1})
       this.email = '',
-      this.pass1 = ''
+      this.pass1 = '',
+      $('#loginModal').modal('hide');
     }
   },
 

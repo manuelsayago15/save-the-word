@@ -82,15 +82,14 @@ export default {
         },
 
         onShare(text) {
-            console.log("share:", text);
+            //console.log("share:", text);
             this.getWord(text);
-            
             this.$notify({
-            title: 'Success',
-            message: 'Word added successfully',
-            type: 'success'
-            });
-            
+              title: 'Success',
+              message: 'Word added successfully',
+              type: 'success'
+            });  
+          
         },
         onHighlight(text) {
             console.log("highlight:", text);
