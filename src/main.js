@@ -21,6 +21,7 @@ import { firebaseConfig } from "./config/firebaseConfig";
 firebase.initializeApp(firebaseConfig);
 
 Vue.use(ElementUI);
+//Vue.use(Notification);
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Swal from 'sweetalert2';
+import {Notification} from 'element-ui';
 import router from '../router/index.js';
 const shortid = require('shortid');
 
@@ -16,7 +17,7 @@ export default new Vuex.Store({
     user: null,
     wordsDB: [],
     count: 0,
-    same: false
+    same: false,
   },
   mutations: {
     setUser (state, payload) {
@@ -62,10 +63,15 @@ export default new Vuex.Store({
             wordData,
             audio
           }
-
           dispatch('setWordDB', state.words);
+          state.wordExist = true;
+          console.log("TRUE: " + state.wordExist);
         } catch(error) {
-          state.wordExist = false;
+          if(error){
+            state.wordExist = false;
+            console.log("FALSE: " + state.wordExist);
+
+          }
             Swal.fire({
               icon: 'error',
               title: 'No Definitions Found',
@@ -74,6 +80,7 @@ export default new Vuex.Store({
         }
       },
 
+      //Check if a word exists
       async consumeDB({state}) {
         try {
           const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}.json?auth=${state.user.idToken}`);
@@ -85,6 +92,13 @@ export default new Vuex.Store({
               console.log("ES IGUAL");
               state.same = true;
               console.log(state.same);
+
+              Notification({
+                title: 'Warning',
+                message: 'You already saved this word',
+                type: 'warning'
+              }); 
+
             } else {
               Array.push(data[key]);
               console.log("PUSH DE PALABRA DESDE DB " + JSON.stringify(state.wordsDB));
@@ -115,7 +129,7 @@ export default new Vuex.Store({
       async setWordDB ({state, dispatch}) {
         //console.log("words.id: " + state.words.id);
         dispatch('consumeDB', state.words.wordData);
-        setTimeout( () => dispatch('setWordValidation'), 2000);
+        setTimeout( () => dispatch('setWordValidation'), 1000);
         console.log(state.wordsDB.length);
         
 
