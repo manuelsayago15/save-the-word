@@ -39,7 +39,7 @@
 <script>
 import Navbar from '../components/Navbar.vue'
 import Swal from 'sweetalert2'
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapState } from "vuex";
 import HighlightTable from "@/components/HighlightTable";
 export default {
 name:'Level1-2',
@@ -79,15 +79,22 @@ name:'Level1-2',
         onShare(text) {
             console.log("share:", text);
             this.getWord(text);
-            this.$notify({
-            title: 'Success',
-            message: 'Word added successfully',
-            type: 'success'
-            });
+            setTimeout( () => { 
+                if(this.wordExist == true && this.same == false){
+                    this.$notify({
+                    title: 'Success',
+                    message: 'Word added successfully',
+                    type: 'success'
+                    }); 
+                }}, 1000);
         },
         onHighlight(text) {
             console.log("highlight:", text);
         },
+    },
+
+    computed: {
+        ...mapState(['wordExist', 'same']),
     },
 }
 </script>

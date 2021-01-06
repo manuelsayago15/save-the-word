@@ -84,11 +84,17 @@ export default {
         onShare(text) {
             //console.log("share:", text);
             this.getWord(text);
-            this.$notify({
-              title: 'Success',
-              message: 'Word added successfully',
-              type: 'success'
-            });  
+            setTimeout( () => { 
+                if(this.wordExist == true && this.same == false){
+                    this.$notify({
+                    title: 'Success',
+                    message: 'Word added successfully',
+                    type: 'success'
+                    }); 
+                }}, 1000);
+                
+                
+             
           
         },
         onHighlight(text) {
@@ -97,7 +103,7 @@ export default {
     },
 
     computed: {
-        ...mapState(['word', 'words', 'wordsArray']),
+        ...mapState(['word', 'words', 'wordsArray', 'wordExist', 'same']),
     },
 }
 </script>

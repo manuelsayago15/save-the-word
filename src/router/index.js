@@ -77,7 +77,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   console.log(store.getters.loggedUser);
   if(to.meta.protectedRoute){
-    if(localStorage.getItem('user')){
+    if(store.state.user !== null || store.state.user !== ''){
       console.log("I'm in");
       next()
     } else {
