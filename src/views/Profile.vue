@@ -24,7 +24,11 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <p class="m-b-10 f-w-600">Name</p>
-                                            <h6 class="text-muted f-w-400">{{user.displayName}}</h6>
+                                            <h6 v-if="!show" class="text-muted f-w-400">{{user.displayName}} </h6>
+                                            <!-- ? {{user.displayName}} : {{user.displayName2}} -->
+                                            <b-icon v-if="!show" @click="showInput" class="h5 pointer" icon="pencil" aria-hidden="true"></b-icon>
+                                            <input v-if="show" type="text" v-model.trim="displayName2">
+                                            <b-icon v-if="show" @click="save" class="h5 pointer" icon="person-check-fill" aria-hidden="true"></b-icon>
                                         </div>
                                     </div>
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Words</h6>
@@ -54,8 +58,9 @@
 </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import Navbar from '../components/Navbar.vue'
+
 export default {
     name: 'Home',
     components:{
@@ -63,7 +68,18 @@ export default {
     },
     data () {
         return {
-
+            show: false,
+            displayName2: ''
+        }
+    },
+    methods: {
+        ...mapActions(['update']),
+        showInput(){
+            this.show = true
+        },
+        save(){
+            this.update({displayName: this.displayName})
+            this.show = false
         }
     },
 
@@ -79,6 +95,12 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
     height: 100vh;
+    }
+    .pointer{
+    cursor: pointer;
+    }
+    input{
+        width: 8em;
     }   
     body {
         background-color: #f9f9fa

@@ -212,7 +212,7 @@ export default new Vuex.Store({
       },
 
       //User login method
-      async userLogin ( {commit, state}, user) {
+      async userLogin ( {commit}, user) {
         console.log("user login: " + JSON.stringify(user));
         try {
           const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
@@ -234,23 +234,23 @@ export default new Vuex.Store({
           commit('setUser', userDB);
           router.push('/levels');
           localStorage.setItem('user', JSON.stringify(userDB));
-          localStorage.setItem('test', JSON.stringify(state.user));
+          //localStorage.setItem('test', JSON.stringify(state.user));
         } catch (error) {
           console.log(error);
         }
       },
 
-      async update ( {commit, state}, user) {
+      async update ( {commit}, user) {
         console.log(user);
         try {
-          const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50/${state.user.idToken}`, {
+          const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50`, {
             method: 'POST',
             body: JSON.stringify({
               displayName: user.displayName
             })
           })
           const userDB = await response.json();
-          console.log(userDB);
+          console.log("updated profile" + JSON.stringify(userDB));
           if (userDB.error) {
             console.log(userDB.error);
             return
@@ -258,7 +258,6 @@ export default new Vuex.Store({
           commit('setUser', userDB);
           router.push('/levels');
           localStorage.setItem('user', JSON.stringify(userDB));
-          localStorage.setItem('test', JSON.stringify(state.user));
         } catch (error) {
           console.log(error);
         }

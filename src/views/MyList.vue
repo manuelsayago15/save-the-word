@@ -14,6 +14,9 @@
                 
             </div>
         </div>
+        <div class="text-center" v-if="wordsArray == ''">
+            <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
+        </div>  
         <table class="table container">
             <thead>
                 <tr>
