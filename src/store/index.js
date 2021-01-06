@@ -187,7 +187,7 @@ export default new Vuex.Store({
 
       //User register method
       async userRegister( {commit}, user) {
-        console.log(user);
+        console.log("user register: " + JSON.stringify(user));
         try {
           const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
             method: 'POST',
@@ -213,18 +213,20 @@ export default new Vuex.Store({
 
       //User login method
       async userLogin ( {commit, state}, user) {
-        console.log(user);
+        console.log("user login: " + JSON.stringify(user));
         try {
           const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
             method: 'POST',
             body: JSON.stringify({
+              displayName: user.displayName,
               email: user.email,
               password: user.password,
               returnSecureToken: true
             })
           })
           const userDB = await response.json();
-          console.log(userDB);
+          console.log("user DB: " + JSON.stringify(userDB))
+
           if (userDB.error) {
             console.log(userDB.error);
             return

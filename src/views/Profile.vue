@@ -1,7 +1,6 @@
 <template>
 <div class="background">
     <Navbar/>
-    <transition name="fade"> 
     <div class="page-content page-container" id="page-content">
         <div class="padding">
             <div class="row container d-flex justify-content-center">
@@ -25,7 +24,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <p class="m-b-10 f-w-600">Name</p>
-                                            <h6 class="text-muted f-w-400">98979989898</h6>
+                                            <h6 class="text-muted f-w-400">{{user.displayName}}</h6>
                                         </div>
                                     </div>
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Words</h6>
@@ -39,11 +38,11 @@
                                             <h6 class="text-muted f-w-400">Dinoter husainm</h6>
                                         </div> -->
                                     </div>
-                                    <ul class="social-link list-unstyled m-t-40 m-b-10">
+                                    <!-- <ul class="social-link list-unstyled m-t-40 m-b-10">
                                         <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="facebook" data-abc="true"><i class="mdi mdi-facebook feather icon-facebook facebook" aria-hidden="true"></i></a></li>
                                         <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="twitter" data-abc="true"><i class="mdi mdi-twitter feather icon-twitter twitter" aria-hidden="true"></i></a></li>
                                         <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="instagram" data-abc="true"><i class="mdi mdi-instagram feather icon-instagram instagram" aria-hidden="true"></i></a></li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
                             </div>
                         </div>
@@ -52,7 +51,6 @@
             </div>
         </div>
     </div>
-    </transition>
 </div>
 </template>
 <script>
@@ -75,12 +73,6 @@ export default {
 }
 </script>
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
     .background{
     background-image: linear-gradient(rgba(248,201,255,.5), rgba(252, 255, 41,.5)), url('../assets/yellownotes.jpg');
     background-size: cover;

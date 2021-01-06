@@ -91,7 +91,7 @@
                 class="form-control" 
                 id="name" 
                 placeholder="Your Name"
-                v-model.trim="name">
+                v-model.trim="displayName">
             </div>
             <div class="form-group">
               <!-- <label for="exampleDropdownFormEmail2">Email address</label> -->
@@ -145,7 +145,7 @@ export default {
   },
   data () {
     return {
-      name: '',
+      displayName: '',
       email: '',
       pass1: '',
       pass2: '',
@@ -155,20 +155,21 @@ export default {
   methods: {
     ...mapActions(['userRegister', 'userLogin']),
     formProcess() {
-      this.userRegister({name: this.name, email: this.email, password: this.pass1})
-      this.name = '',
+      this.userRegister({displayName: this.displayName, email: this.email, password: this.pass1})
+      this.displayName = '',
       this.email = '',
       this.pass1 = '',
       this.pass2 = '',
         Swal.fire({
           icon: 'success',
-          title: 'Your account has been successfully created, now sing in!',
+          title: 'Your account has been successfully created, now login!',
         })
       $('#registerModal').modal('hide');
     },
 
     loginProcess() {
-      this.userLogin({email: this.email, password: this.pass1})
+      this.userLogin({displayName: this.displayName,email: this.email, password: this.pass1})
+      this.displayName,
       this.email = '',
       this.pass1 = '',
       $('#loginModal').modal('hide');
