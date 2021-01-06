@@ -24,10 +24,9 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <p class="m-b-10 f-w-600">Name</p>
-                                            <h6 v-if="!show" class="text-muted f-w-400">{{user.displayName}} </h6>
-                                            <!-- ? {{user.displayName}} : {{user.displayName2}} -->
+                                            <input type="text" v-model.trim="displayName" class="text-muted f-w-400" :disabled = "!show">
+                                            
                                             <b-icon v-if="!show" @click="showInput" class="h5 pointer" icon="pencil" aria-hidden="true"></b-icon>
-                                            <input v-if="show" type="text" v-model.trim="displayName2">
                                             <b-icon v-if="show" @click="save" class="h5 pointer" icon="person-check-fill" aria-hidden="true"></b-icon>
                                         </div>
                                     </div>
@@ -69,7 +68,8 @@ export default {
     data () {
         return {
             show: false,
-            displayName2: ''
+            displayName: '',
+            name: '',
         }
     },
     methods: {
@@ -78,14 +78,20 @@ export default {
             this.show = true
         },
         save(){
-            this.update({displayName: this.displayName})
+            //this.update({displayName: this.displayName})
             this.show = false
+            this.name = this.displayName
         }
     },
 
     computed: {
         ...mapState(['wordsArray', 'user'])
-    }
+    },
+    created() {
+        this.user
+        this.displayName = this.user.displayName
+        //console.log(this.user)
+    },
 }
 </script>
 <style scoped>

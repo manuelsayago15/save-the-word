@@ -166,7 +166,7 @@ export default new Vuex.Store({
       //Get words from Database
       async getWordDB ({commit, state}) {
         if(localStorage.getItem('user')){
-          console.log(state.user);
+          //console.log(state.user);
           commit('setUser', JSON.parse(localStorage.getItem('user')));
         } else {
           console.log(state.user);
