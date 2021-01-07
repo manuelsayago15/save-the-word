@@ -13,7 +13,7 @@
             </HighlightTable>
         </div>
         <div class="text-center" v-if="!show">
-            <b-button @click="quiz" size="lg" class="my-5" variant="light">Go to quiz</b-button>
+            <b-button id="quiz" @click="quiz" size="lg" class="my-5" variant="light">Go to quiz</b-button>
         </div>
     </div>
     <div v-if="show">
@@ -42,6 +42,8 @@ import Navbar from '../components/Navbar.vue'
 import Swal from 'sweetalert2'
 import { mapMutations, mapActions, mapState } from "vuex";
 import HighlightTable from "@/components/HighlightTable";
+import $ from 'jquery'
+
 export default {
     name: 'Level2-2',
     components: {
@@ -58,6 +60,7 @@ export default {
         ...mapActions(['getWord']),
         quiz(){
             this.show= true
+            $(window).scrollTop(0);
         },
         good(){
             Swal.fire({
@@ -106,7 +109,7 @@ export default {
   background-size: cover;
     background-repeat: no-repeat;
 	background-position: center;
-  height: 100%;
+  height: 170vh;
 }
 p{
     font-family: 'Indie Flower', cursive;

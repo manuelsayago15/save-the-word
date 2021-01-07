@@ -1,10 +1,10 @@
 <template>
     <div class="background">
-    <Navbar/>
+        <Navbar/>
          <div class="container">
             <div class="row my-4">
                 <div class="col-lg-8">
-                    <h1 class="ml-5 text-center">MY LIST</h1>
+                    <h1 id="title" class="display-3 font-weight-bold text-center">MY LIST</h1>
                 </div>
                 <!-- <div class="col-lg-4 input-search">
                     <input type="text" v-model="wordInput" ref="search" placeholder="Search a word" 
@@ -142,6 +142,9 @@ export default {
 }
 </script>
 <style scoped>
+    #title{
+        margin-left: 5em;
+    }
     .input-search{
         margin-top: 6px;
     }
@@ -150,7 +153,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100;
+    height: 100%;
     }
     table{
         background-color: #FEE5FA;
