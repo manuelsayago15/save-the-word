@@ -24,7 +24,10 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <p class="m-b-10 f-w-600">Name</p>
-                                            <input type="text" v-model.trim="displayName" class="text-muted f-w-400" :disabled = "!show">
+                                            <input type="text" v-model.trim="displayName" 
+                                                class="text-muted f-w-400" 
+                                                :disabled = "!show"
+                                                @blur="save()">
                                             
                                             <b-icon v-if="!show" @click="showInput" class="h5 pointer" icon="pencil" aria-hidden="true"></b-icon>
                                             <b-icon v-if="show" @click="save" class="h5 pointer" icon="person-check-fill" aria-hidden="true"></b-icon>
@@ -57,7 +60,7 @@
 </div>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import Navbar from '../components/Navbar.vue'
 
 export default {
@@ -73,6 +76,7 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['setName']),
         ...mapActions(['update']),
         showInput(){
             this.show = true
@@ -81,15 +85,18 @@ export default {
             //this.update({displayName: this.displayName})
             this.show = false
             this.name = this.displayName
+            console.log(this.displayName);
+            localStorage.setItem('name', this.displayName)
         }
     },
 
     computed: {
-        ...mapState(['wordsArray', 'user'])
+        ...mapState(['wordsArray', 'user', 'nameDB'])
     },
     created() {
         this.user
         this.displayName = this.user.displayName
+        this.displayName = localStorage.getItem('name')
         //console.log(this.user)
     },
 }

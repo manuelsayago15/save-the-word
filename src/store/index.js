@@ -18,6 +18,8 @@ export default new Vuex.Store({
     wordsDB: [],
     count: 0,
     same: false,
+    nameDB: '',
+    showLevels: 0
   },
   mutations: {
     setUser (state, payload) {
@@ -35,6 +37,10 @@ export default new Vuex.Store({
     setValueWordExist (state, newValue) {
       state.wordExist = newValue;
       console.log(state.wordExist);
+    },
+    setName(state, newName) {
+      state.nameDB = newName;
+      console.log(state.nameDB);
     }
   },
   actions: {
@@ -226,7 +232,7 @@ export default new Vuex.Store({
       },
 
       //User login method
-      async userLogin ( {commit}, user) {
+      async userLogin ( {commit, state}, user) {
         console.log("user login: " + JSON.stringify(user));
         try {
           const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
@@ -240,7 +246,10 @@ export default new Vuex.Store({
           })
           const userDB = await response.json();
           console.log("user DB: " + JSON.stringify(userDB))
-
+          console.log("user display name: " + JSON.stringify(userDB.displayName))
+          state.nameDB = userDB.displayName;
+          console.log("nameDB: " + state.nameDB);
+          localStorage.setItem('name', state.nameDB);
           if (userDB.error) {
             console.log(userDB.error);
             return
