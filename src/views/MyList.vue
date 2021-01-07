@@ -46,7 +46,7 @@
                     <audio :src="word.audio" ref="audio" class="audio"></audio>
                     <b-button @click="playAudio(index)"><b-icon icon="play-circle-fill" aria-hidden="true"></b-icon> </b-button> 
                 </td>
-                <td><b-button @click="deleteWords(word.id)"><b-icon icon="trash" aria-hidden="true" ></b-icon></b-button></td>
+                <td><b-button id="delete" @click="deleteWords(word.id)"><b-icon icon="trash" aria-hidden="true" ></b-icon></b-button></td>
 
                 </tr>
             </tbody>
