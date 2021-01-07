@@ -68,14 +68,18 @@ export default {
             title: 'Great job!!',
             confirmButtonAriaLabel: 'Thanks:D'
             })
-            this.$router.push('/levels/1/2')
+            this.showLevels = parseInt(this.showLevels) + parseInt(1);
+            console.log("Showlveles good answer: " + this.showLevels);
+            this.$router.push('/levels/1/2');
         },
         bad(){
             Swal.fire({
-            icon: 'error',
+                icon: 'error',
             title: 'Try again',
             confirmButtonAriaLabel: 'Okay:c'
             })
+            this.showLevels = 0;
+            console.log("Showleveles bad answer: " + this.showLevels);
         },
         goBack(){
             this.$router.go();
@@ -92,10 +96,6 @@ export default {
                     type: 'success'
                     }); 
                 }}, 1000);
-                
-                
-             
-          
         },
         onHighlight(text) {
             console.log("highlight:", text);
@@ -103,7 +103,7 @@ export default {
     },
 
     computed: {
-        ...mapState(['word', 'words', 'wordsArray', 'wordExist', 'same']),
+        ...mapState(['word', 'words', 'wordsArray', 'wordExist', 'same', 'showLevels']),
     },
 }
 </script>
