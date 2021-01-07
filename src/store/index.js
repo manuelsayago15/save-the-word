@@ -18,8 +18,73 @@ export default new Vuex.Store({
     wordsDB: [],
     count: 0,
     same: false,
+    error: {tipo: null, mensaje: ''}
   },
   mutations: {
+    setError(state, payload) {
+      console.log(payload)
+      console.log(state.error)
+
+      // REINICIAR
+      if (payload === null) {
+        return state.error = {tipo: null, mensaje: ''}
+      }
+      // LOGIN
+      if (payload === "EMAIL_NOT_FOUND") {
+        Notification({
+          title: 'Error',
+          message: 'Email not found',
+          type: 'error'
+        }); 
+        return state.error = {
+          tipo: 'email',
+          mensaje: 'Email no registrado'
+        }
+      }
+      // LOGIN
+      if (payload === "INVALID_PASSWORD") {
+        Notification({
+          title: 'Error',
+          message: 'Invalid password',
+          type: 'error'
+        }); 
+        return state.error = {
+          tipo: 'password',
+          mensaje: 'Contraseña no válida'
+        }
+      }
+      // LOGIN
+      if (payload === "EMAIL_EXISTS") {
+        Notification({
+          title: 'Error',
+          message: 'Email exists',
+          type: 'error'
+        }); 
+        return state.error = {
+          tipo: 'email',
+          mensaje: 'Email ya registrado'
+        }
+      }
+      // REGISTRO
+      if (payload === "INVALID_EMAIL") {
+        Notification({
+          title: 'Error',
+          message: 'Invalid email',
+          type: 'error'
+        }); 
+        return state.error = {
+          tipo: 'email',
+          mensaje: 'Formato email no válido'
+        }
+      }
+      if (payload === "TOO_MANY_ATTEMPTS_TRY_LATER : Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.") {
+        Notification({
+          title: 'Error',
+          message: 'Oopss...too many attempts, try later',
+          type: 'error'
+        }); 
+      }
+    },
     setUser (state, payload) {
       state.user = payload
     },
@@ -213,12 +278,20 @@ export default new Vuex.Store({
             })
           })
           const userDB = await response.json();
+          if(!userDB.error){
+            Swal.fire({
+              icon: 'success',
+              title: 'Your account has been successfully created, now login!',
+            })
+          }
+
           console.log(userDB);
           if (userDB.error) {
-            console.log(userDB.error);
-            return
+            console.log(userDB.error)
+            return commit('setError', userDB.error.message)
           }
           commit('setUser', userDB);
+          commit('setError', null);
           localStorage.setItem('user', JSON.stringify(userDB));
         } catch (error) {
           console.log(error);
@@ -242,10 +315,12 @@ export default new Vuex.Store({
           console.log("user DB: " + JSON.stringify(userDB))
 
           if (userDB.error) {
-            console.log(userDB.error);
-            return
+            console.log(userDB.error)
+            return commit('setError', userDB.error.message)
           }
+          
           commit('setUser', userDB);
+          commit('setError', null);
           router.push('/levels');
           localStorage.setItem('user', JSON.stringify(userDB));
           //localStorage.setItem('test', JSON.stringify(state.user));
@@ -276,13 +351,48 @@ export default new Vuex.Store({
           console.log(error);
         }
       },
+
+      updateUser({commit}, user){
+        JSON.stringify({
+          displayName: user.displayName,
+        })
+        commit('setUser');
+      },
       
       //Logout method
       logout( {commit, state} ){
         console.log(state.user);
+        let timerInterval
+        Swal.fire({
+        title: 'Bye!',
+        timer: 500,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading()
+            timerInterval = setInterval(() => {
+            const content = Swal.getContent()
+            if (content) {
+                const b = content.querySelector('b')
+                if (b) {
+                b.textContent = Swal.getTimerLeft()
+                }
+            }
+            }, 100)
+        },
+        willClose: () => {
+            clearInterval(timerInterval)
+        }
+        }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+        }
+        })
         commit('setUser', null);
         console.log("user after null asigned: " + state.user);
-        router.push('/');
+        setTimeout(()=>{
+          router.push('/');
+        },1000);
         localStorage.removeItem('user')
       }
   },

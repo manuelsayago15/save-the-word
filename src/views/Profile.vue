@@ -26,8 +26,8 @@
                                             <p class="m-b-10 f-w-600">Name</p>
                                             <input type="text" v-model.trim="displayName" class="text-muted f-w-400" :disabled = "!show">
                                             
-                                            <b-icon v-if="!show" @click="showInput" class="h5 pointer" icon="pencil" aria-hidden="true"></b-icon>
-                                            <b-icon v-if="show" @click="save" class="h5 pointer" icon="person-check-fill" aria-hidden="true"></b-icon>
+                                            <b-icon v-if="!show" @click="showInput" class="h5 pointer mt-2" icon="pencil" aria-hidden="true"></b-icon>
+                                            <b-icon v-if="show" @click="save" class="h4 pointer mt-2" icon="check-square" aria-hidden="true"></b-icon>
                                         </div>
                                     </div>
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Words</h6>
@@ -73,14 +73,16 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['update']),
+        ...mapActions(['update', 'updateUser']),
         showInput(){
             this.show = true
         },
         save(){
-            //this.update({displayName: this.displayName})
+            //this.update({name : this.displayName})
+            this.updateUser({displayName : this.name})
             this.show = false
             this.name = this.displayName
+            
         }
     },
 
@@ -88,8 +90,14 @@ export default {
         ...mapState(['wordsArray', 'user'])
     },
     created() {
-        this.user
-        this.displayName = this.user.displayName
+        let datos = {}
+        datos = this.user.displayName
+        console.log(datos)
+        if(datos){
+            this.name = datos
+            this.displayName = this.name
+        }
+        
         //console.log(this.user)
     },
 }

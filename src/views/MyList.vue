@@ -13,10 +13,7 @@
                 </div> -->
                 
             </div>
-        </div>
-        <div class="text-center" v-if="wordsArray == ''">
-            <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
-        </div>  
+        </div> 
         <table class="table container">
             <thead>
                 <tr>
@@ -111,7 +108,36 @@ export default {
     },
     created() {
         this.getWordDB();
-    }
+    },
+    beforeCreate() {
+        
+        let timerInterval
+        Swal.fire({
+        title: 'Loading...',
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading()
+            timerInterval = setInterval(() => {
+            const content = Swal.getContent()
+            if (content) {
+                const b = content.querySelector('b')
+                if (b) {
+                b.textContent = Swal.getTimerLeft()
+                }
+            }
+            }, 100)
+        },
+        willClose: () => {
+            clearInterval(timerInterval)
+        }
+        }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+        }
+        })
+    },
 
 }
 </script>

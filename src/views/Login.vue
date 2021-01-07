@@ -137,7 +137,7 @@
 <script>
 import $ from 'jquery'
 import { mapActions } from 'vuex'
-import Swal from 'sweetalert2'
+
 export default {
   name: 'Login',
   components: {
@@ -160,10 +160,7 @@ export default {
       this.email = '',
       this.pass1 = '',
       this.pass2 = '',
-        Swal.fire({
-          icon: 'success',
-          title: 'Your account has been successfully created, now login!',
-        })
+
       $('#registerModal').modal('hide');
     },
 
