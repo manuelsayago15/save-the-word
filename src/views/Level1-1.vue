@@ -13,7 +13,7 @@
             </HighlightTable>
         </div>
         <div class="text-center" v-if="!show">
-            <b-button @click="quiz" size="lg" class="my-5" variant="light">Go to quiz</b-button>
+            <b-button id="quiz" @click="quiz" size="lg" class="my-5" variant="light">Go to quiz</b-button>
             <!-- <b-button @click="test" size="lg" class="my-5" variant="light">TEST</b-button> -->
 
         </div>

@@ -83,7 +83,7 @@ export default {
         },
         save(){
             //this.update({name : this.displayName})
-            this.updateUser({displayName : this.name})
+            //this.updateUser({displayName : this.name})
             this.show = false
             this.name = this.displayName
             console.log(this.displayName);

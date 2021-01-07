@@ -1,6 +1,6 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, createLocalVue, mount } from '@vue/test-utils'
 import Login from '@/views/Login.vue'
-import MyList from '@/views/MyList.vue'
+import Level11 from '@/views/Level1-1.vue'
 import Navbar from '@/components/Navbar'
 import myStore from './mocks/store'
 import Vuex from "vuex"
@@ -29,14 +29,20 @@ describe('Funcionamiento de aplicacion', () => {
   }),
 
 
-  it('Eliminar palabra', () => {
-    const wrapper = shallowMount(MyList, store)
-    // expect(wrapper.html()).toContain('<h1 class="ml-5 text-center">MY LIST</h1>')
-    wrapper.vm.deleteWords = jest.fn()
-    wrapper.vm.deleteWords()
-    store.dispatch('deleteWords')
-    wrapper.find('#delete').trigger('click')
-    expect(wrapper.vm.deleteWords.mock.calls.length).toBe(1)
+  it('Hacer quiz', () => {
+    const wrapper = mount(Level11)
+    wrapper.vm.quiz = jest.fn()
+    wrapper.vm.quiz()
+    wrapper.find('#quiz').trigger('click')
+    expect(wrapper.vm.quiz.mock.calls.length).toBe(1)
+    const data = Level11.data()
+    expect(data.show).toBeFalsy()
+    //expect(wrapper.html()).toContain('<h1 class="ml-5 text-center">MY LIST</h1>')
+    // wrapper.vm.deleteWords = jest.fn()
+    // wrapper.vm.deleteWords()
+    // store.dispatch('deleteWords')
+    // wrapper.find('#delete').trigger('click')
+    // expect(wrapper.vm.deleteWords.mock.calls.length).toBe(1)
   }),
 
   it('Cerrar sesion', () => {
