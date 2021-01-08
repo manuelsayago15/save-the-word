@@ -57,8 +57,8 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['saveWord']),
-        ...mapActions(['getWord', 'setWordDB', 'getWordDB']),
+        ...mapMutations(['saveWord', 'setTale']),
+        ...mapActions(['getWord', 'setWordDB', 'getWordDB', 'setLevel']),
         quiz(){
             this.show= true
         },
@@ -68,8 +68,12 @@ export default {
             title: 'Great job!!',
             confirmButtonAriaLabel: 'Thanks:D'
             })
-            this.showLevels = parseInt(this.showLevels) + parseInt(1);
-            console.log("Showlveles good answer: " + this.showLevels);
+            //this.showLevels = parseInt(this.showLevels) + parseInt(1);
+            //console.log("Showlevels good answer: " + this.showLevels);
+            this.setTale(true);
+            const level = 1;
+            const tale = 1;
+            this.setLevel({level: level, tale: tale});
             this.$router.push('/levels/1/2');
         },
         bad(){
@@ -79,7 +83,7 @@ export default {
             confirmButtonAriaLabel: 'Okay:c'
             })
             this.showLevels = 0;
-            console.log("Showleveles bad answer: " + this.showLevels);
+            console.log("Showlevels bad answer: " + this.showLevels);
         },
         goBack(){
             this.$router.go();

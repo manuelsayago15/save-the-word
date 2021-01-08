@@ -1,23 +1,59 @@
 <template>
     <div class="background">
     <Navbar/>
-         <div class="container">
+        <div class="container">
             <div class="row my-4">
                 <div class="col-lg-8">
-                    <h1 class="ml-5 text-center">MY LIST</h1>
+                    <h1 class=" text-center">MY LIST</h1>
                 </div>
                 <!-- <div class="col-lg-4 input-search">
                     <input type="text" v-model="wordInput" ref="search" placeholder="Search a word" 
-                        @keyup="save()">
-                        @change="getWord($refs.search.value)">
+                        @keyup="findWord">
                 </div> -->
                 
             </div>
+        </div> 
+
+        <div class="container">
+            <input type="text" placeholder="Search a word" class="form-control my-2" v-model="filters.name.value"/>
+            
+            <v-table
+                class="table"
+                :data="wordsArray"
+                :filters="filters"
+                :currentPage.sync="currentPage"
+                :pageSize="20"
+                @totalPagesChanged="totalPages = $event"
+            >
+                <thead slot="head">
+                    <th scope="col">WORD</th>
+                    <th scope="col">DESCRIPTION</th>
+                    <th scope="col">EXAMPLE</th>
+                    <th scope="col">AUDIO</th>
+                    <th scope="col">ACTIONS</th>
+                </thead>
+                <tbody slot="body" slot-scope="{displayData}">
+                    <tr v-for="(row, index) in displayData" :key="index">
+                        <td>{{row.wordData}}</td>
+                        <td>{{row.meaning}}</td>
+                        <td>{{row.example}}</td>
+                        <td>
+                            <audio :src="row.audio" ref="audio" class="audio"></audio>
+                            <b-button @click="playAudio(index)"><b-icon icon="play-circle-fill" aria-hidden="true"></b-icon> </b-button> 
+                        </td>
+                        <td><b-button @click="deleteWords(row.id)"><b-icon icon="trash" aria-hidden="true" ></b-icon></b-button></td>
+                    </tr>
+                </tbody>
+            </v-table>
+
+            <smart-pagination
+                :currentPage.sync="currentPage"
+                :totalPages="totalPages"
+            />
         </div>
-        <div class="text-center" v-if="wordsArray == ''">
-            <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
-        </div>  
-        <table class="table container">
+
+
+        <!-- <table class="table container">
             <thead>
                 <tr>
                 <th scope="col">WORD</th>
@@ -27,33 +63,21 @@
                 <th scope="col">ACTIONS</th>
                 </tr>
             </thead>
-            <!-- <tbody v-for="(word, index) in words" :key="index">
-                <tr>
-                <th scope="row">{{word.wordData}}</th>
-                <td>{{word.meaning}}</td>
-                <td>{{word.example}}</td>
-                <td>
-                    <b-icon icon="play-circle-fill" aria-hidden="true"></b-icon>
-                    {{word.audio}}</td>
-                    <td><b-icon icon="trash" aria-hidden="true"></b-icon></td>
-                </tr>
-            </tbody> -->
             <tbody v-for="(word, index) in wordsArray" :key="index">
                 <tr>
-                    <!-- {{word.id}} -->
-                    <!-- {{index}} -->
                 <th scope="row">{{word.wordData}}</th>
                 <td>{{word.meaning}}</td>
                 <td>{{word.example}}</td>
                 <td>
                     <audio :src="word.audio" ref="audio" class="audio"></audio>
+                    {{index}}
                     <b-button @click="playAudio(index)"><b-icon icon="play-circle-fill" aria-hidden="true"></b-icon> </b-button> 
                 </td>
                 <td><b-button @click="deleteWords(word.id)"><b-icon icon="trash" aria-hidden="true" ></b-icon></b-button></td>
 
                 </tr>
             </tbody>
-        </table>
+        </table> -->
     </div>
 </template>
 <script>
@@ -68,6 +92,11 @@ export default {
     data () {
         return {
             wordInput: '',
+            filters: {
+                name: { value: '', keys: ['wordData'] }
+            },
+            currentPage: 1,
+            totalPages: 0
         }
     },
     methods: {
@@ -76,7 +105,10 @@ export default {
         
         save(){
             this.saveWord(this.wordInput);
+        },
 
+        findWord() {
+            
         },
 
         deleteWords(id) {
@@ -101,6 +133,7 @@ export default {
         },
 
         playAudio(index){
+            console.log(index);
             document.getElementsByClassName('audio')[index].play();
         }
     },
@@ -111,7 +144,36 @@ export default {
     },
     created() {
         this.getWordDB();
-    }
+    },
+    beforeCreate() {
+        
+        let timerInterval
+        Swal.fire({
+        title: 'Loading...',
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading()
+            timerInterval = setInterval(() => {
+            const content = Swal.getContent()
+            if (content) {
+                const b = content.querySelector('b')
+                if (b) {
+                b.textContent = Swal.getTimerLeft()
+                }
+            }
+            }, 100)
+        },
+        willClose: () => {
+            clearInterval(timerInterval)
+        }
+        }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+        }
+        })
+    },
 
 }
 </script>

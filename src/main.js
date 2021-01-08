@@ -26,6 +26,9 @@ Vue.use(ElementUI);
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 
+import SmartTable from 'vuejs-smart-table'
+Vue.use(SmartTable)
+
 Vue.config.productionTip = false
 
 new Vue({

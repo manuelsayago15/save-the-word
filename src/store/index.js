@@ -19,9 +19,91 @@ export default new Vuex.Store({
     count: 0,
     same: false,
     nameDB: '',
-    showLevels: 0
+    showLevels: 0,
+    levels: '',
+    nivel: '',
+    showTale: false,
+    showTale2: false,
+    showTale3: false,
+    error: {tipo: null, mensaje: ''}
   },
   mutations: {
+    setTale(state, newValue) {
+      state.showTale = newValue;
+      console.log(state.showTale);
+    },
+    setTale2(state, newValue) {
+      state.showTale2 = newValue;
+      console.log(state.showTale2);
+    },
+    setTale3(state, newValue) {
+      state.showTale3 = newValue;
+      console.log(state.showTale3);
+    },
+    setError(state, payload) {
+      console.log(payload)
+      console.log(state.error)
+
+      // REINICIAR
+      if (payload === null) {
+        return state.error = {tipo: null, mensaje: ''}
+      }
+      // LOGIN
+      if (payload === "EMAIL_NOT_FOUND") {
+        Notification({
+          title: 'Error',
+          message: 'Email not found',
+          type: 'error'
+        }); 
+        return state.error = {
+          tipo: 'email',
+          mensaje: 'Email no registrado'
+        }
+      }
+      // LOGIN
+      if (payload === "INVALID_PASSWORD") {
+        Notification({
+          title: 'Error',
+          message: 'Invalid password',
+          type: 'error'
+        }); 
+        return state.error = {
+          tipo: 'password',
+          mensaje: 'Contraseña no válida'
+        }
+      }
+      // LOGIN
+      if (payload === "EMAIL_EXISTS") {
+        Notification({
+          title: 'Error',
+          message: 'Email exists',
+          type: 'error'
+        }); 
+        return state.error = {
+          tipo: 'email',
+          mensaje: 'Email ya registrado'
+        }
+      }
+      // REGISTRO
+      if (payload === "INVALID_EMAIL") {
+        Notification({
+          title: 'Error',
+          message: 'Invalid email',
+          type: 'error'
+        }); 
+        return state.error = {
+          tipo: 'email',
+          mensaje: 'Formato email no válido'
+        }
+      }
+      if (payload === "TOO_MANY_ATTEMPTS_TRY_LATER : Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.") {
+        Notification({
+          title: 'Error',
+          message: 'Oopss... too many attempts, try later',
+          type: 'error'
+        }); 
+      }
+    },
     setUser (state, payload) {
       state.user = payload
     },
@@ -70,7 +152,8 @@ export default new Vuex.Store({
             audio
           }
           dispatch('setWordDB', state.words);
-          state.wordExist = true;
+          state.wordExist = true
+          //setTimeout( () => state.wordExist = true, 1500);
           console.log("TRUE: " + state.wordExist);
         } catch(error) {
           if(error){
@@ -121,9 +204,9 @@ export default new Vuex.Store({
          
           console.log("PALABRA RECIEN AGREGADA: EN DB" + state.words.wordData);
           
-          const found = state.wordsDB.find(element => element == 44);
+          // const found = state.wordsDB.find(element => element == 44);
 
-          console.log(found);
+          // console.log(found);
           
           console.log("Data from wordsDB: " + JSON.stringify(state.wordsDB));
           console.log("wordsDB length: " + state.wordsDB.length);
@@ -219,12 +302,20 @@ export default new Vuex.Store({
             })
           })
           const userDB = await response.json();
+          if(!userDB.error){
+            Swal.fire({
+              icon: 'success',
+              title: 'Your account has been successfully created, now login!',
+            })
+          }
+
           console.log(userDB);
           if (userDB.error) {
-            console.log(userDB.error);
-            return
+            console.log(userDB.error)
+            return commit('setError', userDB.error.message)
           }
           commit('setUser', userDB);
+          commit('setError', null);
           localStorage.setItem('user', JSON.stringify(userDB));
         } catch (error) {
           console.log(error);
@@ -232,7 +323,7 @@ export default new Vuex.Store({
       },
 
       //User login method
-      async userLogin ( {commit, state}, user) {
+      async userLogin ( {commit, state, dispatch}, user) {
         console.log("user login: " + JSON.stringify(user));
         try {
           const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
@@ -251,12 +342,15 @@ export default new Vuex.Store({
           console.log("nameDB: " + state.nameDB);
           localStorage.setItem('name', state.nameDB);
           if (userDB.error) {
-            console.log(userDB.error);
-            return
+            console.log(userDB.error)
+            return commit('setError', userDB.error.message)
           }
+          
           commit('setUser', userDB);
+          commit('setError', null);
           router.push('/levels');
           localStorage.setItem('user', JSON.stringify(userDB));
+          dispatch('getLevels');
           //localStorage.setItem('test', JSON.stringify(state.user));
         } catch (error) {
           console.log(error);
@@ -285,15 +379,144 @@ export default new Vuex.Store({
           console.log(error);
         }
       },
+
+      updateUser({commit}, user){
+        JSON.stringify({
+          displayName: user.displayName,
+        })
+        commit('setUser');
+      },
       
       //Logout method
       logout( {commit, state} ){
         console.log(state.user);
+        let timerInterval
+        Swal.fire({
+          title: 'Bye!',
+          timer: 500,
+          timerProgressBar: true,
+          didOpen: () => {
+              Swal.showLoading()
+              timerInterval = setInterval(() => {
+              const content = Swal.getContent()
+              if (content) {
+                  const b = content.querySelector('b')
+                  if (b) {
+                  b.textContent = Swal.getTimerLeft()
+                  }
+              }
+              }, 100)
+          },
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+          }
+        })
         commit('setUser', null);
         console.log("user after null asigned: " + state.user);
         router.push('/');
+        // setTimeout(()=>{
+        //   router.push('/');
+        // },200);
         localStorage.removeItem('user')
+      },
+
+      async setLevel({state}, {level, tale}) {
+        if(level == 1 && tale == 1) {
+          console.log("level 1: " + level);
+          console.log("tale 1: " + tale);
+          state.nivel = "one";
+          state.levels = {
+            firstTale: {
+              tale
+            }
+          }
+        }
+
+        if(level == 1 && tale == 2) {
+          console.log("level 1: " + level);
+          console.log("tale 2: " + tale);
+          state.nivel = "one";
+          state.levels = {
+            secondTale: {
+              tale
+            }
+          }
+        }
+
+        if(level == 2 && tale == 1) {
+          console.log("level 2: " + level);
+          console.log("tale 1: " + tale);
+          state.nivel = "two";
+          state.levels = {
+            firstTale: {
+              tale
+            }
+          }
+        }
+        
+        if(level == 2 && tale == 2) {
+          console.log("level 2: " + level);
+          console.log("tale 2: " + tale);
+          state.nivel = "two";
+          state.levels = {
+            secondTale: {
+              tale
+            }
+          }
+        }
+        
+        console.log("level: " + level);
+        console.log("tale: " + tale);
+        try {
+          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}/levels/${state.nivel}/tales.json?auth=${state.user.idToken}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(state.levels)
+          })
+
+          const dataDB = await response.json();
+          console.log("Response level: " + JSON.stringify(dataDB));
+          // JSON.stringify(dataDB)
+          
+        } catch(error) {
+          console.log(error);
+        }
+    },
+    
+    async getLevels({state}) {
+      try {
+        const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}.json?auth=${state.user.idToken}`);
+        const data = await response.json();
+        //console.log("Data from getLevels" + JSON.stringify(data));
+        console.log("level: " + JSON.stringify(data.levels.one));
+        let Array = []
+        for (let key in data) {
+          console.log("DATA getlevels: " + JSON.stringify(data));
+          console.log(data[key]);
+          console.log(JSON.stringify(data[key].one));
+          Array.push(data[key].one);
+          Array.push(data[key].two);
+        }
+        console.log(Array);
+        console.log(Array[Array.length - 1]);
+        if(Array[Array.length - 2]){
+          state.showTale = true;
+        }
+        if(Array[Array.length - 1]){
+          state.showTale2 = true;
+          state.showTale3 = true;
+        }
+      } catch (error) {
+        console.log(error);
       }
+    }
   },
 
   getters: {

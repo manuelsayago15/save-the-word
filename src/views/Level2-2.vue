@@ -54,8 +54,8 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['saveWord']),
-        ...mapActions(['getWord']),
+        ...mapMutations(['saveWord', 'setTale']),
+        ...mapActions(['getWord', 'setLevel']),
         quiz(){
             this.show= true
         },
@@ -65,6 +65,10 @@ export default {
             title: 'Great job!!',
             confirmButtonAriaLabel: 'Thanks:D'
             })
+            this.setTale(false);
+            const level = 2;
+            const tale = 2;
+            this.setLevel({level: level, tale: tale});
         },
         bad(){
             Swal.fire({

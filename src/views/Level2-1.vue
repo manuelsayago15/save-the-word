@@ -54,8 +54,8 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['saveWord']),
-        ...mapActions(['getWord']),
+        ...mapMutations(['saveWord', 'setTale', 'setTale3']),
+        ...mapActions(['getWord', 'setLevel']),
         quiz(){
             this.show= true
         },
@@ -65,6 +65,10 @@ export default {
             title: 'Great job!!',
             confirmButtonAriaLabel: 'Thanks:D'
             })
+            this.setTale3(true);
+            const level = 2;
+            const tale = 1;
+            this.setLevel({level: level, tale: tale});
             this.$router.push('/levels/2/2')
         },
         bad(){
