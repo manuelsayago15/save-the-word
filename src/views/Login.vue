@@ -209,6 +209,7 @@ export default {
 #title{
   margin-left: 1em;
 }
+
 @media (max-width: 768px) { 
   #background{
     background-image: url('../assets/yellownotes.jpg');
