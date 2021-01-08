@@ -138,12 +138,7 @@ export default new Vuex.Store({
           let meaning = state.array[0].meanings[0].definitions[0].definition;
           let example = state.array[0].meanings[0].definitions[0].example;
           let audio = state.array[0].phonetics[0].audio;
-         console.log("Word: " + wordData);
-         console.log("Meaning: " + meaning);
-         console.log("Example: " + example);
-          console.log("Audio: " + audio);
           let id = shortid.generate();
-         console.log("ID: " + id);
           state.words = {
             id,
             meaning,
@@ -154,12 +149,9 @@ export default new Vuex.Store({
           dispatch('setWordDB', state.words);
           state.wordExist = true
           //setTimeout( () => state.wordExist = true, 1500);
-          console.log("TRUE: " + state.wordExist);
         } catch(error) {
           if(error){
             state.wordExist = false;
-            console.log("FALSE: " + state.wordExist);
-
           }
             Swal.fire({
               icon: 'error',
@@ -174,13 +166,11 @@ export default new Vuex.Store({
         try {
           const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}.json?auth=${state.user.idToken}`);
           const data = await response.json();
-          console.log(data);
+          //console.log(data);
           let Array = []
           for (let key in data) {
             if(data[key].wordData === state.words.wordData) {
-              console.log("ES IGUAL");
               state.same = true;
-              console.log(state.same);
 
               Notification({
                 title: 'Warning',
@@ -190,26 +180,9 @@ export default new Vuex.Store({
 
             } else {
               Array.push(data[key]);
-              console.log("PUSH DE PALABRA DESDE DB " + JSON.stringify(state.wordsDB));
-              console.log("data[key]: " + JSON.stringify(data[key]));
             }
           }
           state.wordsDB = Array;
-          console.log("PALABRAS DESDE DB: " + JSON.stringify(state.wordsDB));
-          // if(state.wordsDB.length > 0){
-          //   for (var i = 0; i < state.wordsDB.length; i++) {
-          //     console.log("wordData from wordsDB: " + JSON.stringify(state.wordsDB[i].wordData));
-          //   }
-          // }
-         
-          console.log("PALABRA RECIEN AGREGADA: EN DB" + state.words.wordData);
-          
-          // const found = state.wordsDB.find(element => element == 44);
-
-          // console.log(found);
-          
-          console.log("Data from wordsDB: " + JSON.stringify(state.wordsDB));
-          console.log("wordsDB length: " + state.wordsDB.length);
         } catch (error) {
           console.log(error);
         }
@@ -219,9 +192,6 @@ export default new Vuex.Store({
         //console.log("words.id: " + state.words.id);
         dispatch('consumeDB', state.words.wordData);
         setTimeout( () => dispatch('setWordValidation'), 1000);
-        console.log(state.wordsDB.length);
-        
-
       },
 
       async setWordValidation({state}) {
@@ -236,7 +206,6 @@ export default new Vuex.Store({
             })
   
             const dataDB = await response.json();
-            console.log("Response setWordDB: " + JSON.stringify(dataDB));
             //console.log(dataDB.name);
             //console.log(JSON.stringify(state.words));
             JSON.stringify(dataDB)
@@ -258,20 +227,16 @@ export default new Vuex.Store({
           //console.log(state.user);
           commit('setUser', JSON.parse(localStorage.getItem('user')));
         } else {
-          console.log(state.user);
+          //console.log(state.user);
           return commit('setUser', null);
         }
         const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}.json?auth=${state.user.idToken}`);
         const data = await response.json();
-        console.log("Data from Database" + data);
          let Array = []
           for (let key in data) {
-            console.log("DATA: " + JSON.stringify(data));
-            console.log(data[key].wordData);
             Array.push(data[key]);
           }
           state.wordsArray = Array
-          console.log("ARRAY: " + JSON.stringify(state.wordsArray));
       },
 
       //Delete word from Database
@@ -290,7 +255,7 @@ export default new Vuex.Store({
 
       //User register method
       async userRegister( {commit}, user) {
-        console.log("user register: " + JSON.stringify(user));
+        //console.log("user register: " + JSON.stringify(user));
         try {
           const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
             method: 'POST',
@@ -309,7 +274,7 @@ export default new Vuex.Store({
             })
           }
 
-          console.log(userDB);
+          //console.log(userDB);
           if (userDB.error) {
             console.log(userDB.error)
             return commit('setError', userDB.error.message)
@@ -324,7 +289,7 @@ export default new Vuex.Store({
 
       //User login method
       async userLogin ( {commit, state, dispatch}, user) {
-        console.log("user login: " + JSON.stringify(user));
+        //console.log("user login: " + JSON.stringify(user));
         try {
           const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA4henVOu1LcVxyj7hzlG0N7gfGQFi3f50', {
             method: 'POST',
@@ -336,10 +301,7 @@ export default new Vuex.Store({
             })
           })
           const userDB = await response.json();
-          console.log("user DB: " + JSON.stringify(userDB))
-          console.log("user display name: " + JSON.stringify(userDB.displayName))
           state.nameDB = userDB.displayName;
-          console.log("nameDB: " + state.nameDB);
           localStorage.setItem('name', state.nameDB);
           if (userDB.error) {
             console.log(userDB.error)
@@ -389,7 +351,7 @@ export default new Vuex.Store({
       
       //Logout method
       logout( {commit, state} ){
-        console.log(state.user);
+        //console.log(state.user);
         let timerInterval
         Swal.fire({
           title: 'Bye!',
@@ -417,7 +379,6 @@ export default new Vuex.Store({
           }
         })
         commit('setUser', null);
-        console.log("user after null asigned: " + state.user);
         router.push('/');
         // setTimeout(()=>{
         //   router.push('/');
@@ -427,8 +388,8 @@ export default new Vuex.Store({
 
       async setLevel({state}, {level, tale}) {
         if(level == 1 && tale == 1) {
-          console.log("level 1: " + level);
-          console.log("tale 1: " + tale);
+          // console.log("level 1: " + level);
+          // console.log("tale 1: " + tale);
           state.nivel = "one";
           state.levels = {
             firstTale: {
@@ -438,8 +399,8 @@ export default new Vuex.Store({
         }
 
         if(level == 1 && tale == 2) {
-          console.log("level 1: " + level);
-          console.log("tale 2: " + tale);
+          // console.log("level 1: " + level);
+          // console.log("tale 2: " + tale);
           state.nivel = "one";
           state.levels = {
             secondTale: {
@@ -449,8 +410,8 @@ export default new Vuex.Store({
         }
 
         if(level == 2 && tale == 1) {
-          console.log("level 2: " + level);
-          console.log("tale 1: " + tale);
+          // console.log("level 2: " + level);
+          // console.log("tale 1: " + tale);
           state.nivel = "two";
           state.levels = {
             firstTale: {
@@ -460,8 +421,8 @@ export default new Vuex.Store({
         }
         
         if(level == 2 && tale == 2) {
-          console.log("level 2: " + level);
-          console.log("tale 2: " + tale);
+          // console.log("level 2: " + level);
+          // console.log("tale 2: " + tale);
           state.nivel = "two";
           state.levels = {
             secondTale: {
@@ -470,8 +431,6 @@ export default new Vuex.Store({
           }
         }
         
-        console.log("level: " + level);
-        console.log("tale: " + tale);
         try {
           const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/levels/${state.user.localId}/levels/${state.nivel}/tales.json?auth=${state.user.idToken}`, {
             method: 'POST',
@@ -482,7 +441,6 @@ export default new Vuex.Store({
           })
 
           const dataDB = await response.json();
-          console.log("Response level: " + JSON.stringify(dataDB));
           // JSON.stringify(dataDB)
           
         } catch(error) {
@@ -495,17 +453,11 @@ export default new Vuex.Store({
         const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/levels/${state.user.localId}.json?auth=${state.user.idToken}`);
         const data = await response.json();
         //console.log("Data from getLevels" + JSON.stringify(data));
-        console.log("level: " + JSON.stringify(data.levels.one));
         let Array = []
         for (let key in data) {
-          console.log("DATA getlevels: " + JSON.stringify(data));
-          console.log(data[key]);
-          console.log(JSON.stringify(data[key].one));
           Array.push(data[key].one);
           Array.push(data[key].two);
         }
-        console.log(Array);
-        console.log(Array[Array.length - 1]);
         if(Array[Array.length - 2]){
           state.showTale = true;
         }
