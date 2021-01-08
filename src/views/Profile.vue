@@ -79,6 +79,7 @@ export default {
         ...mapMutations(['setName']),
         ...mapActions(['update', 'updateUser', 'getWordDB']),
 
+
         showInput(){
             this.show = true
         },
@@ -100,6 +101,7 @@ export default {
         this.displayName = this.user.displayName
         this.displayName = localStorage.getItem('name')
         this.getWordDB();
+
         //console.log(this.user)
     },
 }

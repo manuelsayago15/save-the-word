@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6 col-12 mt-5">
         <div class="d-block d-sm-none">
-            <b-button variant="outline-dark" class="mr-4 mt-3">Login</b-button>
+            <b-button id="login" variant="outline-dark" class="mr-4 mt-3">Login</b-button>
             <b-button id="register" class="mt-3 mr-4" variant="warning">Register</b-button>
         </div>
         <h1 id="title" variant="secondary"  class="display-1 font-weight-bold mt-5">Save <br> the <br> word</h1>
@@ -59,7 +59,7 @@
                 Remember me
               </label>
             </div> -->
-            <button type="submit" class="btn btn-primary" :disabled="blockLogin">Sign in</button>
+            <button id="loginSubmit" type="submit" class="btn btn-primary" :disabled="blockLogin">Sign in</button>
           </form>
           
         </div>
@@ -209,6 +209,7 @@ export default {
 #title{
   margin-left: 1em;
 }
+
 @media (max-width: 768px) { 
   #background{
     background-image: url('../assets/yellownotes.jpg');
