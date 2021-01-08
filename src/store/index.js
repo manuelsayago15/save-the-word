@@ -351,7 +351,7 @@ export default new Vuex.Store({
       
       //Logout method
       logout( {commit, state} ){
-        //console.log(state.user);
+        console.log(state.user);
         let timerInterval
         Swal.fire({
           title: 'Bye!',
@@ -379,6 +379,7 @@ export default new Vuex.Store({
           }
         })
         commit('setUser', null);
+        console.log("user after null asigned: " + state.user);
         router.push('/');
         // setTimeout(()=>{
         //   router.push('/');
@@ -388,8 +389,8 @@ export default new Vuex.Store({
 
       async setLevel({state}, {level, tale}) {
         if(level == 1 && tale == 1) {
-          // console.log("level 1: " + level);
-          // console.log("tale 1: " + tale);
+          console.log("level 1: " + level);
+          console.log("tale 1: " + tale);
           state.nivel = "one";
           state.levels = {
             firstTale: {
@@ -399,8 +400,8 @@ export default new Vuex.Store({
         }
 
         if(level == 1 && tale == 2) {
-          // console.log("level 1: " + level);
-          // console.log("tale 2: " + tale);
+          console.log("level 1: " + level);
+          console.log("tale 2: " + tale);
           state.nivel = "one";
           state.levels = {
             secondTale: {
@@ -410,8 +411,8 @@ export default new Vuex.Store({
         }
 
         if(level == 2 && tale == 1) {
-          // console.log("level 2: " + level);
-          // console.log("tale 1: " + tale);
+          console.log("level 2: " + level);
+          console.log("tale 1: " + tale);
           state.nivel = "two";
           state.levels = {
             firstTale: {
@@ -421,8 +422,8 @@ export default new Vuex.Store({
         }
         
         if(level == 2 && tale == 2) {
-          // console.log("level 2: " + level);
-          // console.log("tale 2: " + tale);
+          console.log("level 2: " + level);
+          console.log("tale 2: " + tale);
           state.nivel = "two";
           state.levels = {
             secondTale: {
@@ -431,6 +432,8 @@ export default new Vuex.Store({
           }
         }
         
+        console.log("level: " + level);
+        console.log("tale: " + tale);
         try {
           const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/levels/${state.user.localId}/levels/${state.nivel}/tales.json?auth=${state.user.idToken}`, {
             method: 'POST',
@@ -441,6 +444,7 @@ export default new Vuex.Store({
           })
 
           const dataDB = await response.json();
+          console.log("Response level: " + JSON.stringify(dataDB));
           // JSON.stringify(dataDB)
           
         } catch(error) {
@@ -453,11 +457,17 @@ export default new Vuex.Store({
         const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/levels/${state.user.localId}.json?auth=${state.user.idToken}`);
         const data = await response.json();
         //console.log("Data from getLevels" + JSON.stringify(data));
+        console.log("level: " + JSON.stringify(data.levels.one));
         let Array = []
         for (let key in data) {
+          console.log("DATA getlevels: " + JSON.stringify(data));
+          console.log(data[key]);
+          console.log(JSON.stringify(data[key].one));
           Array.push(data[key].one);
           Array.push(data[key].two);
         }
+        console.log(Array);
+        console.log(Array[Array.length - 1]);
         if(Array[Array.length - 2]){
           state.showTale = true;
         }
