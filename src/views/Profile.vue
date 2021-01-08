@@ -27,7 +27,7 @@
                                             <input type="text" v-model.trim="displayName" 
                                                 class="text-muted f-w-400" 
                                                 :disabled = "!show"
-                                                @blur="save()">
+                                                >
                                             
                                             <b-icon v-if="!show" @click="showInput" class="h5 pointer mt-2" icon="pencil" aria-hidden="true"></b-icon>
                                             <b-icon v-if="show" @click="save" class="h4 pointer mt-2" icon="check-square" aria-hidden="true"></b-icon>
@@ -38,6 +38,7 @@
                                         <div class="col-sm-6">
                                             <p class="m-b-10 f-w-600">Saved words</p>
                                             <h6 class="text-muted f-w-400">{{wordsArray.length}}</h6>
+                                            <b-button pill><router-link class="color" to="/my-list">Go to my list!</router-link></b-button>
                                         </div>
                                         <!-- <div class="col-sm-6">
                                             <p class="m-b-10 f-w-600">Most Viewed</p>
@@ -97,10 +98,10 @@ export default {
         ...mapState(['wordsArray', 'user', 'nameDB'])
     },
     created() {
-        this.user
+        this.getWordDB();
         this.displayName = this.user.displayName
         this.displayName = localStorage.getItem('name')
-        this.getWordDB();
+        //localStorage.getItem('user')
 
         //console.log(this.user)
     },
@@ -252,5 +253,9 @@ export default {
         margin: 0 10px 0 0;
         -webkit-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out
+    }
+
+    .color {
+        color: white;
     }
 </style>

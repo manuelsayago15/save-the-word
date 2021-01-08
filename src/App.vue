@@ -15,7 +15,7 @@ export default {
   },
 
   created () {
-    this.getWordDB();
+    //this.getWordDB();
   }
 };
 </script>

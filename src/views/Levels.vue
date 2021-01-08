@@ -59,7 +59,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getLevels'])
+    ...mapActions(['getLevels', 'getWordDB'])
   },
 
   computed: {
@@ -67,6 +67,7 @@ export default {
   },
 
   created() {
+    this.getWordDB();
     this.getLevels();
   }
   

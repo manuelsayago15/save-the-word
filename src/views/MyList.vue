@@ -22,7 +22,7 @@
                 :data="wordsArray"
                 :filters="filters"
                 :currentPage.sync="currentPage"
-                :pageSize="20"
+                :pageSize="5"
                 @totalPagesChanged="totalPages = $event"
             >
                 <thead slot="head">
@@ -32,8 +32,10 @@
                     <th scope="col">AUDIO</th>
                     <th scope="col">ACTIONS</th>
                 </thead>
+                
                 <tbody slot="body" slot-scope="{displayData}">
                     <tr v-for="(row, index) in displayData" :key="index">
+                        
                         <td>{{row.wordData}}</td>
                         <td>{{row.meaning}}</td>
                         <td>{{row.example}}</td>
@@ -189,7 +191,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100%;
+    height: 100vh;
     }
     table{
         background-color: #FEE5FA;

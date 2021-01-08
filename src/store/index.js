@@ -271,7 +271,7 @@ export default new Vuex.Store({
             Array.push(data[key]);
           }
           state.wordsArray = Array
-          //console.log("ARRAY: " + JSON.stringify(state.wordsArray));
+          console.log("ARRAY: " + JSON.stringify(state.wordsArray));
       },
 
       //Delete word from Database
@@ -473,7 +473,7 @@ export default new Vuex.Store({
         console.log("level: " + level);
         console.log("tale: " + tale);
         try {
-          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}/levels/${state.nivel}/tales.json?auth=${state.user.idToken}`, {
+          const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/levels/${state.user.localId}/levels/${state.nivel}/tales.json?auth=${state.user.idToken}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -492,7 +492,7 @@ export default new Vuex.Store({
     
     async getLevels({state}) {
       try {
-        const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/words/${state.user.localId}.json?auth=${state.user.idToken}`);
+        const response = await fetch(`https://save-the-word-40090-default-rtdb.firebaseio.com/levels/${state.user.localId}.json?auth=${state.user.idToken}`);
         const data = await response.json();
         //console.log("Data from getLevels" + JSON.stringify(data));
         console.log("level: " + JSON.stringify(data.levels.one));
